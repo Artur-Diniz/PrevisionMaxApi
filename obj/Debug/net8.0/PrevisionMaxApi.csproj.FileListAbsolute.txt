@@ -135,3 +135,9 @@ C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\ru
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\obj\Debug\net8.0\PrevisionMaxApi.sourcelink.json
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\web.config
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\appsettings.Development.json
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\appsettings.json
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\PrevisionMaxApi.deps.json
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\PrevisionMaxApi.runtimeconfig.json

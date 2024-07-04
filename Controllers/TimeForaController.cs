@@ -6,7 +6,7 @@ using PrevisionMax.Models;
 namespace PrevisionMax.ConTrollers
 {
     [ApiController]
-    [Route("Controller")]
+    [Route("api/timefora")]
     public class TimeForaController : ControllerBase
     {
 
@@ -26,6 +26,9 @@ namespace PrevisionMax.ConTrollers
             {
                 EstatisticaTimesFora fora = await _context.Tb_EstatisticaFora
                 .FirstOrDefaultAsync(t => t.IdEstatisticaFora == id);
+                if(fora == null)            
+                   throw new Exception("Não foi Encontrado um Time com esse Id");
+
 
                 return Ok(fora);
             }
