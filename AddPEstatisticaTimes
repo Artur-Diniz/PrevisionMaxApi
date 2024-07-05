@@ -508,25 +508,3 @@ GO
 COMMIT;
 GO
 
-BEGIN TRANSACTION;
-GO
-
-ALTER TABLE [Tb_EstatisticaTimes] ADD [GolsSofridosMaior] int NOT NULL DEFAULT 0;
-GO
-
-ALTER TABLE [Tb_EstatisticaTimes] ADD [GolsSofridosMedias] int NOT NULL DEFAULT 0;
-GO
-
-ALTER TABLE [Tb_EstatisticaTimes] ADD [GolsSofridosMediasCF] int NOT NULL DEFAULT 0;
-GO
-
-ALTER TABLE [Tb_EstatisticaTimes] ADD [GolsSofridosMenor] int NOT NULL DEFAULT 0;
-GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240704182308_AddEstatisticaTimes', N'8.0.6');
-GO
-
-COMMIT;
-GO
-

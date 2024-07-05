@@ -10,6 +10,8 @@ namespace PrevisionMax.Data
         {
         }
 
+
+        public DbSet<EstatisticaTimes> Tb_EstatisticaTimes { get; set; }
         public DbSet<EstatisticaTimesCasa> Tb_EstatisticaCasa { get; set; }
         public DbSet<EstatisticaTimesFora> Tb_EstatisticaFora { get; set; }
         public DbSet<Classificacao> TB_Classificacao { get; set; }
@@ -26,13 +28,7 @@ namespace PrevisionMax.Data
             modelBuilder.Entity<TabelaCampeonato>().ToTable("TB_TBCampeonato");
             modelBuilder.Entity<Palpites>().ToTable("TB_Palpites");
 
-            modelBuilder.Entity<EstatisticaTimesCasa>().HasData
-            (
-                new EstatisticaTimesCasa() { IdEstatisticaCasa = 1, NomeTimeCasa = "Palmeiras", GolsCasa = 99 },
-                new EstatisticaTimesCasa() { IdEstatisticaCasa = 2, NomeTimeCasa = "Corinthians", GolsCasa = -31 },
-                new EstatisticaTimesCasa() { IdEstatisticaCasa = 3, NomeTimeCasa = "Flamengo", GolsCasa = 2 }
-            );
-
+        
             // Configuração das chaves estrangeiras
             modelBuilder.Entity<Palpites>()
                 .HasOne<Partidas>()

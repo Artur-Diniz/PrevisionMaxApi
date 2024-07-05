@@ -94,7 +94,7 @@ namespace PrevisionMax.ConTrollers
                 await _context.SaveChangesAsync();
                 return Ok(p.idPartida);
             }
-             catch (System.Exception ex)
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -147,7 +147,7 @@ namespace PrevisionMax.ConTrollers
         #endregion
 
         #region  Metodos Gerar Palpites
-        public Palpites GerarPalpites(Partidas partidas)
+        public Palpites GerarPalpitesAsync(Partidas partidas)
         {
             Palpites palpites = new Palpites();
 
@@ -155,6 +155,74 @@ namespace PrevisionMax.ConTrollers
             return palpites;
 
         }
+
+
         #endregion
+
+        #region Gerar EstatisticasTimes
+        public async Task<EstatisticaTimes> GerarEsatisticaGeralAsync(Partidas partidas)
+        {
+            EstatisticaTimes estatistica = new EstatisticaTimes();
+
+             List<EstatisticaTimesCasa> listacasa = await _context.Tb_EstatisticaCasa.Where(c => c.NomeTimeCasa == partidas.NomeTimeCasa|| c.NomeTimeCasa == partidas.NomeTimeFora).ToListAsync();
+
+                if (listacasa.Any())
+                {
+                    estatistica.GolMedias = (float)listacasa.Average(c => c.GolsCasa);
+                    estatistica.GolMaior = listacasa.Max(c => c.GolsCasa);
+                    estatistica.GolMenor = listacasa.Min(c => c.GolsCasa);
+
+                    estatistica.GolsSofridosMedias = (float)listacasa.Average(c => c.GolsSofridosCasa);
+                    estatistica.GolsSofridosMaior = listacasa.Max(c => c.GolsSofridosCasa);
+                    estatistica.GolsSofridosMenor = listacasa.Min(c => c.GolsSofridosCasa);
+
+                    estatistica.TentativasGolsMedias = (float)listacasa.Average(c => c.TentativasGolsCasa);
+                    estatistica.TentativasGolsMaior = listacasa.Max(c => c.TentativasGolsCasa);
+                    estatistica.TentativasGolsMenor = listacasa.Min(c => c.TentativasGolsCasa);
+
+                    estatistica.chutesnoGolsMedia = (float)listacasa.Average(c => c.chutesnoGolsCasa);
+                    estatistica.chutesnoGolsMaior = (int)listacasa.Max(c => c.chutesnoGolsCasa);
+                    estatistica.chutesnoGolsMenor = (int)listacasa.Min(c => c.chutesnoGolsCasa);
+
+                    estatistica.chutespraforaMedia = (float)listacasa.Average(c => c.chutesnoGolsCasa);
+                    estatistica.chutespraforaMaior = (int)listacasa.Max(c => c.chutesnoGolsCasa);
+                    estatistica.chutespraforaMenor = (int)listacasa.Min(c => c.chutesnoGolsCasa);
+
+                    estatistica.escanteiosMedia = (float)listacasa.Average(c => c.escanteiosCasa);
+                    estatistica.escanteiosMaior = (int)listacasa.Max(c => c.escanteiosCasa);
+                    estatistica.escanteiosMenor = (int)listacasa.Min(c => c.escanteiosCasa);
+
+                    estatistica.InpedimentosMedia = (float)listacasa.Average(c => c.InpedimentosCasa);
+                    estatistica.InpedimentosMaior = (int)listacasa.Max(c => c.InpedimentosCasa);
+                    estatistica.InpedimentosMenor = (int)listacasa.Min(c => c.InpedimentosCasa);
+
+                    estatistica.DefesaGoleiroMedia = (float)listacasa.Average(c => c.DefesaGoleiroCasa);
+                    estatistica.DefesaGoleiroMaior = (int)listacasa.Max(c => c.DefesaGoleiroCasa);
+                    estatistica.DefesaGoleiroMenor = (int)listacasa.Min(c => c.DefesaGoleiroCasa);
+
+                    estatistica.FaltasMedia = (float)listacasa.Average(c => c.FaltasCasas);
+                    estatistica.FaltasMaior = listacasa.Max(c => c.FaltasCasas);
+                    estatistica.FaltasMenor = listacasa.Min(c => c.FaltasCasas);
+
+                    estatistica.CartoesAmareloMedia = (float)listacasa.Average(c => c.CartoesAmareloCasa);
+                    estatistica.CartoesAmareloMaior = (int)listacasa.Max(c => c.CartoesAmareloCasa);
+                    estatistica.CartoesAmareloMenor = (int)listacasa.Min(c => c.CartoesAmareloCasa);
+
+                    estatistica.PassesTotaisMedia = (float)listacasa.Average(c => c.PassesTotaisCasa);
+                    estatistica.PassesTotaisMaior = listacasa.Max(c => c.PassesTotaisCasa);
+                    estatistica.PassesTotaisMenor = listacasa.Min(c => c.PassesTotaisCasa);
+
+                    estatistica.PassesCompletosMedia = (float)listacasa.Average(c => c.PassesCompletosCasa);
+                    estatistica.PassesCompletosMaior = listacasa.Max(c => c.PassesCompletosCasa);
+                    estatistica.PassesCompletosMenor = listacasa.Min(c => c.PassesCompletosCasa);
+
+                    estatistica.AtaquesperigososMedia = (float)listacasa.Average(c => c.AtaquesperigososCasa);
+                }
+
+
+            return estatistica;       
+        }
+        #endregion
+
     }
 }

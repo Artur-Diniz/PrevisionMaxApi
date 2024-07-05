@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrevisionMax.Data;
 
@@ -11,9 +12,11 @@ using PrevisionMax.Data;
 namespace PrevisionMaxApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240704181835_AddPEstatisticaTimes")]
+    partial class AddPEstatisticaTimes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,18 +149,6 @@ namespace PrevisionMaxApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("GolMenor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GolsSofridosMaior")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GolsSofridosMedias")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GolsSofridosMediasCF")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GolsSofridosMenor")
                         .HasColumnType("int");
 
                     b.Property<int>("InpedimentosMaior")

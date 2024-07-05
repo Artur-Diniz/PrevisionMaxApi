@@ -16,14 +16,17 @@ namespace PrevisionMax.Models
         public string NomeTimeCasa { get; set; } = string.Empty;
         public string NomeTimeFora { get; set; } = string.Empty;
         public DateTime data { get; set; }
+        
+        public bool PartidaAnalise { get; set; }
 
         public string Campeonato { get; set; } = string.Empty;
 
+
         [ForeignKey("EstatisticaCasa")]
-        public int IdEstatisticaCasa { get; set; }
+        public int? IdEstatisticaCasa { get; set; }
 
         [ForeignKey("EstatisticaFora")]
-        public int IdEstatisticaFora { get; set; }
+        public int? IdEstatisticaFora { get; set; }
 
     }
 }

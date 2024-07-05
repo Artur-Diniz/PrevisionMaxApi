@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PrevisionMaxApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+23924ea48d773d3856e0af594fc83e9adcec230b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f45b0bea7ddcd2f85c91483554602e4fd791e4d1")]
 [assembly: System.Reflection.AssemblyProductAttribute("PrevisionMaxApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PrevisionMaxApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
