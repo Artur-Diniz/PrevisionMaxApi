@@ -43,7 +43,7 @@ namespace PrevisionMax.ConTrollers
             try
             {
                 List<Partidas> p = await _context.TB_Partidas.Where(n => n.NomeTimeCasa.ToLower().Contains(Nome.ToLower())
-                || n.NomeTimeCasa.ToLower().Contains(Nome.ToLower()))
+                || n.NomeTimeFora.ToLower().Contains(Nome.ToLower()))
                 .ToListAsync();
 
 
@@ -101,6 +101,40 @@ namespace PrevisionMax.ConTrollers
 
         }
 
+        [HttpPost("PartidaComEstatistica")]
+        public async Task<IActionResult> AddGeral([FromBody] PartidaComEstatisticaDTO dto)
+        {
+            try
+            {
+                await _context.Tb_EstatisticaCasa.AddAsync(dto.Casa);
+                await _context.Tb_EstatisticaFora.AddAsync(dto.Fora);
+                await _context.SaveChangesAsync();
+
+                dto.Partida.IdEstatisticaCasa = dto.Casa.IdEstatisticaCasa;
+                dto.Partida.IdEstatisticaFora = dto.Fora.IdEstatisticaFora;
+                await _context.TB_Partidas.AddAsync(dto.Partida);
+
+                List<int> ids = await GerarEsatisticaGeralAsync(dto.Partida);
+
+                string Mensagem = string.Empty;
+                string timeCasa = "EstatisticaGeralTimeCasa";
+                string timefora = "EstatisticaGeralTimeFora";
+                string idEstatisticasCasa = $"Id do {timeCasa}: {dto.Casa.IdEstatisticaCasa}";
+                string idEstatisticasFora = $"Id do {timefora}: {dto.Fora.IdEstatisticaFora}";
+
+                Mensagem = $"Id da Partida Gerada:{dto.Partida.idPartida} \n{idEstatisticasCasa} \n {idEstatisticasFora}";
+
+                await _context.SaveChangesAsync();
+                return Ok(Mensagem);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
         #endregion
 
         #region metodos Put
@@ -146,82 +180,321 @@ namespace PrevisionMax.ConTrollers
 
         #endregion
 
-        #region  Metodos Gerar Palpites
-        public Palpites GerarPalpitesAsync(Partidas partidas)
-        {
-            Palpites palpites = new Palpites();
 
 
-            return palpites;
 
-        }
-
-
-        #endregion
+        // #endregion
 
         #region Gerar EstatisticasTimes
-        public async Task<EstatisticaTimes> GerarEsatisticaGeralAsync(Partidas partidas)
+
+        [HttpGet("GetEstatisticaTimes/{id}")]
+        public async Task<IActionResult> GetEstatisticaTimesAsync(int id)
         {
+            try
+            {
+                EstatisticaTimes pt = await _context.Tb_EstatisticaTimes.FirstOrDefaultAsync(p => p.IdTime == id);
+
+                if (pt == null)
+                    throw new Exception("Não foi Encontrado uma Partida com esse Id");
+
+                return Ok(pt);
+
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        private async Task<List<int>> GerarEsatisticaGeralAsync(Partidas partidas)
+        {
+            List<EstatisticaTimesCasa> listacasa = await BuscarUltimos5Casa(partidas.NomeTimeCasa, true);
+            List<EstatisticaTimesCasa> casacasa = await BuscarJogosCasacasa(partidas.NomeTimeCasa);
+
+            List<EstatisticaTimesCasa> listafora = await BuscarUltimos5Casa(partidas.NomeTimeCasa, false);
+            List<EstatisticaTimesCasa> forafora = await BuscarPorJogosForaFora(partidas.NomeTimeFora);
+
+            EstatisticaTimes estatisticaCasa = new EstatisticaTimes();
+
+            if (listacasa.Any())
+            {
+                EstatisticaTIMEsDTO time = new EstatisticaTIMEsDTO();
+
+                time.listacasa = listacasa;
+                time.casacasa = casacasa;
+
+                estatisticaCasa = GerarEstatisticaTime(time);
+            }
+
+
+            EstatisticaTimes estatisticaFora = new EstatisticaTimes();
+
+            if (listafora.Any())
+            {
+                EstatisticaTIMEsDTO time = new EstatisticaTIMEsDTO();
+
+                time.listacasa = listafora;
+                time.casacasa = forafora;
+                estatisticaFora = GerarEstatisticaTime(time);
+            }
+
+
+            await _context.Tb_EstatisticaTimes.AddAsync(estatisticaCasa);
+            await _context.Tb_EstatisticaTimes.AddAsync(estatisticaFora);
+            await _context.SaveChangesAsync();
+
+            List<int> ids = new List<int> { estatisticaCasa.IdTime, estatisticaFora.IdTime };
+
+            return ids;
+        }
+
+
+
+        private async Task<List<EstatisticaTimesCasa>> BuscarJogosCasacasa(string nome)
+        {
+            List<Partidas> casacasa = await _context.TB_Partidas.Where(p => p.NomeTimeCasa == nome
+             && p.TipoPartida == "CasaCasa").ToListAsync();
+
+            List<int> idsCasa = new List<int>();
+
+            foreach (var item in casacasa)
+            {
+                idsCasa.Add((int)item.IdEstatisticaCasa);
+            }
             EstatisticaTimes estatistica = new EstatisticaTimes();
 
-             List<EstatisticaTimesCasa> listacasa = await _context.Tb_EstatisticaCasa.Where(c => c.NomeTimeCasa == partidas.NomeTimeCasa|| c.NomeTimeCasa == partidas.NomeTimeFora).ToListAsync();
+            List<EstatisticaTimesCasa> listacasa = new List<EstatisticaTimesCasa>();
+            foreach (var item in idsCasa)
+            {
+                EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(p => p.IdEstatisticaCasa == item);
+                listacasa.Add(casa);
+            }
 
-                if (listacasa.Any())
-                {
-                    estatistica.GolMedias = (float)listacasa.Average(c => c.GolsCasa);
-                    estatistica.GolMaior = listacasa.Max(c => c.GolsCasa);
-                    estatistica.GolMenor = listacasa.Min(c => c.GolsCasa);
+            return listacasa;
 
-                    estatistica.GolsSofridosMedias = (float)listacasa.Average(c => c.GolsSofridosCasa);
-                    estatistica.GolsSofridosMaior = listacasa.Max(c => c.GolsSofridosCasa);
-                    estatistica.GolsSofridosMenor = listacasa.Min(c => c.GolsSofridosCasa);
-
-                    estatistica.TentativasGolsMedias = (float)listacasa.Average(c => c.TentativasGolsCasa);
-                    estatistica.TentativasGolsMaior = listacasa.Max(c => c.TentativasGolsCasa);
-                    estatistica.TentativasGolsMenor = listacasa.Min(c => c.TentativasGolsCasa);
-
-                    estatistica.chutesnoGolsMedia = (float)listacasa.Average(c => c.chutesnoGolsCasa);
-                    estatistica.chutesnoGolsMaior = (int)listacasa.Max(c => c.chutesnoGolsCasa);
-                    estatistica.chutesnoGolsMenor = (int)listacasa.Min(c => c.chutesnoGolsCasa);
-
-                    estatistica.chutespraforaMedia = (float)listacasa.Average(c => c.chutesnoGolsCasa);
-                    estatistica.chutespraforaMaior = (int)listacasa.Max(c => c.chutesnoGolsCasa);
-                    estatistica.chutespraforaMenor = (int)listacasa.Min(c => c.chutesnoGolsCasa);
-
-                    estatistica.escanteiosMedia = (float)listacasa.Average(c => c.escanteiosCasa);
-                    estatistica.escanteiosMaior = (int)listacasa.Max(c => c.escanteiosCasa);
-                    estatistica.escanteiosMenor = (int)listacasa.Min(c => c.escanteiosCasa);
-
-                    estatistica.InpedimentosMedia = (float)listacasa.Average(c => c.InpedimentosCasa);
-                    estatistica.InpedimentosMaior = (int)listacasa.Max(c => c.InpedimentosCasa);
-                    estatistica.InpedimentosMenor = (int)listacasa.Min(c => c.InpedimentosCasa);
-
-                    estatistica.DefesaGoleiroMedia = (float)listacasa.Average(c => c.DefesaGoleiroCasa);
-                    estatistica.DefesaGoleiroMaior = (int)listacasa.Max(c => c.DefesaGoleiroCasa);
-                    estatistica.DefesaGoleiroMenor = (int)listacasa.Min(c => c.DefesaGoleiroCasa);
-
-                    estatistica.FaltasMedia = (float)listacasa.Average(c => c.FaltasCasas);
-                    estatistica.FaltasMaior = listacasa.Max(c => c.FaltasCasas);
-                    estatistica.FaltasMenor = listacasa.Min(c => c.FaltasCasas);
-
-                    estatistica.CartoesAmareloMedia = (float)listacasa.Average(c => c.CartoesAmareloCasa);
-                    estatistica.CartoesAmareloMaior = (int)listacasa.Max(c => c.CartoesAmareloCasa);
-                    estatistica.CartoesAmareloMenor = (int)listacasa.Min(c => c.CartoesAmareloCasa);
-
-                    estatistica.PassesTotaisMedia = (float)listacasa.Average(c => c.PassesTotaisCasa);
-                    estatistica.PassesTotaisMaior = listacasa.Max(c => c.PassesTotaisCasa);
-                    estatistica.PassesTotaisMenor = listacasa.Min(c => c.PassesTotaisCasa);
-
-                    estatistica.PassesCompletosMedia = (float)listacasa.Average(c => c.PassesCompletosCasa);
-                    estatistica.PassesCompletosMaior = listacasa.Max(c => c.PassesCompletosCasa);
-                    estatistica.PassesCompletosMenor = listacasa.Min(c => c.PassesCompletosCasa);
-
-                    estatistica.AtaquesperigososMedia = (float)listacasa.Average(c => c.AtaquesperigososCasa);
-                }
-
-
-            return estatistica;       
         }
+
+ 
+        private async Task<List<EstatisticaTimesCasa>> BuscarPorJogosForaFora(string nome)
+        {
+            List<Partidas> casacasa = await _context.TB_Partidas.Where(p => p.NomeTimeFora == nome
+            && p.TipoPartida == "ForaFora").ToListAsync();
+
+            List<int> idsFora = new List<int>();
+
+            foreach (var item in casacasa)
+            {
+                idsFora.Add((int)item.IdEstatisticaCasa);
+            }
+            EstatisticaTimes estatistica = new EstatisticaTimes();
+
+            List<EstatisticaTimesFora> listafora = new List<EstatisticaTimesFora>();
+            foreach (var item in idsFora)
+            {
+                EstatisticaTimesFora casa = await _context.Tb_EstatisticaFora.FirstOrDefaultAsync(p => p.IdEstatisticaFora == item);
+                listafora.Add(casa);
+            }
+            List<EstatisticaTimesCasa> listaCasa = new List<EstatisticaTimesCasa>();
+
+            foreach (var item in listafora)
+            {
+                EstatisticaTimesCasa c = ConverterForaParaCasa(item);
+                listaCasa.Add(c);
+            }
+
+            return listaCasa;
+        }
+
+        private EstatisticaTimes GerarEstatisticaTime(EstatisticaTIMEsDTO c)
+        {
+            EstatisticaTimes estatistica = new EstatisticaTimes
+            {
+                GolMedias = (float)c.listacasa.Average(c => c.GolsCasa),
+                GolMaior = c.listacasa.Max(c => c.GolsCasa),
+                GolMenor = c.listacasa.Min(c => c.GolsCasa),
+                GolMediasCF = (float)c.casacasa.Average(c => c.GolsCasa),
+                GolMenorCF = c.casacasa.Min(c => c.GolsCasa),
+                GolMaiorCF = c.casacasa.Max(c => c.GolsCasa),
+
+
+                GolsSofridosMedias = (float)c.listacasa.Average(c => c.GolsSofridosCasa),
+                GolsSofridosMaior = c.listacasa.Max(c => c.GolsSofridosCasa),
+                GolsSofridosMenor = c.listacasa.Min(c => c.GolsSofridosCasa),
+                GolsSofridosMediasCF = (float)c.casacasa.Average(c => c.GolsSofridosCasa),
+                GolsSofridosMaiorCF = c.casacasa.Max(c => c.GolsSofridosCasa),
+                GolsSofridosMenorCF = c.casacasa.Min(c => c.GolsSofridosCasa),
+
+                TentativasGolsMedias = (float)c.listacasa.Average(c => c.TentativasGolsCasa),
+                TentativasGolsMaior = c.listacasa.Max(c => c.TentativasGolsCasa),
+                TentativasGolsMenor = c.listacasa.Min(c => c.TentativasGolsCasa),
+                TentativasGolsMediasCF = (float)c.casacasa.Average(c => c.TentativasGolsCasa),
+                TentativasGolsMaiorCF = c.casacasa.Max(c => c.TentativasGolsCasa),
+                TentativasGolsMenorCF = c.casacasa.Min(c => c.TentativasGolsCasa),
+
+                chutesnoGolsMedia = (float)c.listacasa.Average(c => c.chutesnoGolsCasa),
+                chutesnoGolsMaior = (int)c.listacasa.Max(c => c.chutesnoGolsCasa),
+                chutesnoGolsMenor = (int)c.listacasa.Min(c => c.chutesnoGolsCasa),
+                chutesnoGolsMediaCF = (float)c.casacasa.Average(c => c.chutesnoGolsCasa),
+                chutesnoGolsMaiorCF = (int)c.casacasa.Max(c => c.chutesnoGolsCasa),
+                chutesnoGolsMenorCF = (int)c.casacasa.Min(c => c.chutesnoGolsCasa),
+
+                chutespraforaMedia = (float)c.listacasa.Average(c => c.chutesnoGolsCasa),
+                chutespraforaMaior = (int)c.listacasa.Max(c => c.chutesnoGolsCasa),
+                chutespraforaMenor = (int)c.listacasa.Min(c => c.chutesnoGolsCasa),
+                chutespraforaMediaCF = (float)c.casacasa.Average(c => c.chutesnoGolsCasa),
+                chutespraforaMaiorCF = (int)c.casacasa.Max(c => c.chutesnoGolsCasa),
+                chutespraforaMenorCF = (int)c.casacasa.Min(c => c.chutesnoGolsCasa),
+
+                escanteiosMedia = (float)c.listacasa.Average(c => c.escanteiosCasa),
+                escanteiosMaior = (int)c.listacasa.Max(c => c.escanteiosCasa),
+                escanteiosMenor = (int)c.listacasa.Min(c => c.escanteiosCasa),
+                escanteiosMediaCF = (float)c.casacasa.Average(c => c.escanteiosCasa),
+                escanteiosMaiorCF = (int)c.casacasa.Max(c => c.escanteiosCasa),
+                escanteiosMenorCF = (int)c.casacasa.Min(c => c.escanteiosCasa),
+
+                InpedimentosMedia = (float)c.listacasa.Average(c => c.InpedimentosCasa),
+                InpedimentosMaior = (int)c.listacasa.Max(c => c.InpedimentosCasa),
+                InpedimentosMenor = (int)c.listacasa.Min(c => c.InpedimentosCasa),
+                InpedimentosMediaCF = (float)c.casacasa.Average(c => c.InpedimentosCasa),
+                InpedimentosMaiorCF = (int)c.casacasa.Max(c => c.InpedimentosCasa),
+                InpedimentosMenorCF = (int)c.casacasa.Min(c => c.InpedimentosCasa),
+
+                DefesaGoleiroMedia = (float)c.listacasa.Average(c => c.DefesaGoleiroCasa),
+                DefesaGoleiroMaior = (int)c.listacasa.Max(c => c.DefesaGoleiroCasa),
+                DefesaGoleiroMenor = (int)c.listacasa.Min(c => c.DefesaGoleiroCasa),
+                DefesaGoleiroMediaCF = (float)c.casacasa.Average(c => c.DefesaGoleiroCasa),
+                DefesaGoleiroMaiorCF = (int)c.casacasa.Max(c => c.DefesaGoleiroCasa),
+                DefesaGoleiroMenorCF = (int)c.casacasa.Min(c => c.DefesaGoleiroCasa),
+
+                FaltasMedia = (float)c.listacasa.Average(c => c.FaltasCasas),
+                FaltasMaior = c.listacasa.Max(c => c.FaltasCasas),
+                FaltasMenor = c.listacasa.Min(c => c.FaltasCasas),
+                FaltasMediaCF = (float)c.casacasa.Average(c => c.FaltasCasas),
+                FaltasMaiorCF = c.casacasa.Max(c => c.FaltasCasas),
+                FaltasMenorCF = c.casacasa.Min(c => c.FaltasCasas),
+
+                CartoesAmareloMedia = (float)c.listacasa.Average(c => c.CartoesAmareloCasa),
+                CartoesAmareloMaior = (int)c.listacasa.Max(c => c.CartoesAmareloCasa),
+                CartoesAmareloMenor = (int)c.listacasa.Min(c => c.CartoesAmareloCasa),
+                CartoesAmareloMediaCF = (float)c.casacasa.Average(c => c.CartoesAmareloCasa),
+                CartoesAmareloMaiorCF = (int)c.casacasa.Max(c => c.CartoesAmareloCasa),
+                CartoesAmareloMenorCF = (int)c.casacasa.Min(c => c.CartoesAmareloCasa),
+
+                PassesTotaisMedia = (float)c.listacasa.Average(c => c.PassesTotaisCasa),
+                PassesTotaisMaior = c.listacasa.Max(c => c.PassesTotaisCasa),
+                PassesTotaisMenor = c.listacasa.Min(c => c.PassesTotaisCasa),
+                PassesTotaisMediaCF = (float)c.casacasa.Average(c => c.PassesTotaisCasa),
+                PassesTotaisMaiorCF = c.casacasa.Max(c => c.PassesTotaisCasa),
+                PassesTotaisMenorCF = c.casacasa.Min(c => c.PassesTotaisCasa),
+
+                PassesCompletosMedia = (float)c.listacasa.Average(c => c.PassesCompletosCasa),
+                PassesCompletosMediaCF = (float)c.casacasa.Average(c => c.PassesCompletosCasa),
+
+                AtaquesperigososMedia = (float)c.listacasa.Average(c => c.AtaquesperigososCasa),
+                AtaquesperigososMediaCF = (float)c.casacasa.Average(c => c.AtaquesperigososCasa)
+            };
+
+
+            return estatistica;
+        }
+
+        private EstatisticaTimesCasa ConverterForaParaCasa(EstatisticaTimesFora f)
+        {
+
+            EstatisticaTimesCasa c = new EstatisticaTimesCasa();
+            c.GolsCasa = f.GolsFora;
+            c.GolsSofridosCasa = f.GolsSofridosFora;
+            c.TentativasGolsCasa = f.TentativasGolsFora;
+            c.chutesnoGolsCasa = f.chutesnoGolsFora;
+            c.chutespraforaCasa = f.chutespraforaFora;
+            c.escanteiosCasa = f.escanteiosFora;
+            c.InpedimentosCasa = f.InpedimentosFora;
+            c.DefesaGoleiroCasa = f.DefesaGoleiroFora;
+            c.FaltasCasas = f.FaltasForas;
+            c.CartoesVermelhosCasa = f.CartoesVermelhosFora;
+            c.CartoesAmareloCasa = f.CartoesAmareloFora;
+            c.PassesTotaisCasa = f.PassesTotaisFora;
+            c.PassesCompletosCasa = f.PassesCompletosFora;
+            c.AtaquesperigososCasa = f.AtaquesperigososFora;
+
+            return c;
+
+        }
+
+        private EstatisticaTimesFora ConverterCasaParaFora(EstatisticaTimesCasa c)
+        {
+            EstatisticaTimesFora f = new EstatisticaTimesFora();
+            f.GolsFora = c.GolsCasa;
+            f.GolsSofridosFora = c.GolsSofridosCasa;
+            f.TentativasGolsFora = c.TentativasGolsCasa;
+            f.chutesnoGolsFora = c.chutesnoGolsCasa;
+            f.chutespraforaFora = c.chutespraforaCasa;
+            f.escanteiosFora = c.escanteiosCasa;
+            f.InpedimentosFora = c.InpedimentosCasa;
+            f.DefesaGoleiroFora = c.DefesaGoleiroCasa;
+            f.FaltasForas = c.FaltasCasas;
+            f.CartoesVermelhosFora = c.CartoesVermelhosCasa;
+            f.CartoesAmareloFora = c.CartoesAmareloCasa;
+            f.PassesTotaisFora = c.PassesTotaisCasa;
+            f.PassesCompletosFora = c.PassesCompletosCasa;
+            f.AtaquesperigososFora = c.AtaquesperigososCasa;
+
+            return f;
+        }
+
+
+        private async Task<List<EstatisticaTimesCasa>> BuscarUltimos5Casa(string nome, bool tipoPartidaCasa)
+        {
+            string tipopartida = string.Empty;
+            if (tipoPartidaCasa == true)
+                tipopartida = "Ultimas5Casa";
+            else
+                tipopartida = "Ultimas5Fora";
+
+
+            List<Partidas> ids5casa = await _context.TB_Partidas.Where(p => p.NomeTimeCasa == nome
+            && p.TipoPartida == tipopartida ||
+            p.NomeTimeFora == nome
+            && p.TipoPartida == tipopartida).ToListAsync();
+
+            List<int> idsCasa = new List<int>();
+            List<int> idsfora = new List<int>();
+
+            foreach (var item in ids5casa)
+            {
+                if (nome == item.NomeTimeCasa)
+                    idsCasa.Add((int)item.IdEstatisticaCasa);
+                else if (nome == item.NomeTimeFora)
+                    idsfora.Add((int)item.IdEstatisticaFora);
+            }
+
+            List<EstatisticaTimesCasa> listacasa = new List<EstatisticaTimesCasa>();
+
+            foreach (var item in idsCasa)
+            {
+                EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(p => p.IdEstatisticaCasa == item);
+                listacasa.Add(casa);
+            }
+            List<EstatisticaTimesFora> listafora = new List<EstatisticaTimesFora>();
+            foreach (var item in idsfora)
+            {
+                EstatisticaTimesFora fora = await _context.Tb_EstatisticaFora.FirstOrDefaultAsync(p => p.IdEstatisticaFora == item);
+                listafora.Add(fora);
+            }
+
+            foreach (var f in listafora)
+            {
+                EstatisticaTimesCasa c = ConverterForaParaCasa(f);
+
+                listacasa.Add(c);
+            }
+
+            return listacasa;
+
+        }
+
+
         #endregion
 
     }

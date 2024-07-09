@@ -530,3 +530,343 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+DECLARE @var28 sysname;
+SELECT @var28 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'PassesCompletosMaior');
+IF @var28 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var28 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] DROP COLUMN [PassesCompletosMaior];
+GO
+
+DECLARE @var29 sysname;
+SELECT @var29 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'PassesCompletosMenor');
+IF @var29 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var29 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] DROP COLUMN [PassesCompletosMenor];
+GO
+
+ALTER TABLE [TB_Partidas] ADD [TipoPartida] varChar(200) NULL;
+GO
+
+DECLARE @var30 sysname;
+SELECT @var30 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'escanteiosMediaCF');
+IF @var30 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var30 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [escanteiosMediaCF] real NOT NULL;
+GO
+
+DECLARE @var31 sysname;
+SELECT @var31 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'escanteiosMedia');
+IF @var31 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var31 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [escanteiosMedia] real NOT NULL;
+GO
+
+DECLARE @var32 sysname;
+SELECT @var32 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'chutespraforaMediaCF');
+IF @var32 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var32 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [chutespraforaMediaCF] real NOT NULL;
+GO
+
+DECLARE @var33 sysname;
+SELECT @var33 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'chutespraforaMedia');
+IF @var33 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var33 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [chutespraforaMedia] real NOT NULL;
+GO
+
+DECLARE @var34 sysname;
+SELECT @var34 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'chutesnoGolsMediaCF');
+IF @var34 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var34 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [chutesnoGolsMediaCF] real NOT NULL;
+GO
+
+DECLARE @var35 sysname;
+SELECT @var35 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'chutesnoGolsMedia');
+IF @var35 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var35 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [chutesnoGolsMedia] real NOT NULL;
+GO
+
+DECLARE @var36 sysname;
+SELECT @var36 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'TentativasGolsMediasCF');
+IF @var36 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var36 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [TentativasGolsMediasCF] real NOT NULL;
+GO
+
+DECLARE @var37 sysname;
+SELECT @var37 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'TentativasGolsMedias');
+IF @var37 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var37 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [TentativasGolsMedias] real NOT NULL;
+GO
+
+DECLARE @var38 sysname;
+SELECT @var38 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'PassesTotaisMediaCF');
+IF @var38 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var38 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [PassesTotaisMediaCF] real NOT NULL;
+GO
+
+DECLARE @var39 sysname;
+SELECT @var39 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'PassesTotaisMedia');
+IF @var39 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var39 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [PassesTotaisMedia] real NOT NULL;
+GO
+
+DECLARE @var40 sysname;
+SELECT @var40 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'PassesCompletosMediaCF');
+IF @var40 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var40 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [PassesCompletosMediaCF] real NOT NULL;
+GO
+
+DECLARE @var41 sysname;
+SELECT @var41 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'PassesCompletosMedia');
+IF @var41 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var41 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [PassesCompletosMedia] real NOT NULL;
+GO
+
+DECLARE @var42 sysname;
+SELECT @var42 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'InpedimentosMediaCF');
+IF @var42 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var42 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [InpedimentosMediaCF] real NOT NULL;
+GO
+
+DECLARE @var43 sysname;
+SELECT @var43 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'InpedimentosMedia');
+IF @var43 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var43 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [InpedimentosMedia] real NOT NULL;
+GO
+
+DECLARE @var44 sysname;
+SELECT @var44 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'GolsSofridosMediasCF');
+IF @var44 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var44 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [GolsSofridosMediasCF] real NOT NULL;
+GO
+
+DECLARE @var45 sysname;
+SELECT @var45 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'GolsSofridosMedias');
+IF @var45 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var45 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [GolsSofridosMedias] real NOT NULL;
+GO
+
+DECLARE @var46 sysname;
+SELECT @var46 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'GolMediasCF');
+IF @var46 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var46 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [GolMediasCF] real NOT NULL;
+GO
+
+DECLARE @var47 sysname;
+SELECT @var47 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'GolMedias');
+IF @var47 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var47 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [GolMedias] real NOT NULL;
+GO
+
+DECLARE @var48 sysname;
+SELECT @var48 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'FaltasMediaCF');
+IF @var48 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var48 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [FaltasMediaCF] real NOT NULL;
+GO
+
+DECLARE @var49 sysname;
+SELECT @var49 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'FaltasMedia');
+IF @var49 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var49 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [FaltasMedia] real NOT NULL;
+GO
+
+DECLARE @var50 sysname;
+SELECT @var50 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'DefesaGoleiroMediaCF');
+IF @var50 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var50 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [DefesaGoleiroMediaCF] real NOT NULL;
+GO
+
+DECLARE @var51 sysname;
+SELECT @var51 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'DefesaGoleiroMedia');
+IF @var51 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var51 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [DefesaGoleiroMedia] real NOT NULL;
+GO
+
+DECLARE @var52 sysname;
+SELECT @var52 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'CartoesVermelhosMedia');
+IF @var52 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var52 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [CartoesVermelhosMedia] real NOT NULL;
+GO
+
+DECLARE @var53 sysname;
+SELECT @var53 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'CartoesAmareloMediaCF');
+IF @var53 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var53 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [CartoesAmareloMediaCF] real NOT NULL;
+GO
+
+DECLARE @var54 sysname;
+SELECT @var54 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'CartoesAmareloMedia');
+IF @var54 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var54 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [CartoesAmareloMedia] real NOT NULL;
+GO
+
+DECLARE @var55 sysname;
+SELECT @var55 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'AtaquesperigososMediaCF');
+IF @var55 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var55 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [AtaquesperigososMediaCF] real NOT NULL;
+GO
+
+DECLARE @var56 sysname;
+SELECT @var56 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Tb_EstatisticaTimes]') AND [c].[name] = N'AtaquesperigososMedia');
+IF @var56 IS NOT NULL EXEC(N'ALTER TABLE [Tb_EstatisticaTimes] DROP CONSTRAINT [' + @var56 + '];');
+ALTER TABLE [Tb_EstatisticaTimes] ALTER COLUMN [AtaquesperigososMedia] real NOT NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [CartoesAmareloMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [CartoesAmareloMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [DefesaGoleiroMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [DefesaGoleiroMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [FaltasMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [FaltasMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [GolMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [GolMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [GolsSofridosMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [GolsSofridosMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [InpedimentosMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [InpedimentosMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [PassesTotaisMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [PassesTotaisMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [TentativasGolsMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [TentativasGolsMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [chutesnoGolsMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [chutesnoGolsMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [chutespraforaMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [chutespraforaMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [escanteiosMaiorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [escanteiosMenorCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20240707202042_Upload0707', N'8.0.6');
+GO
+
+COMMIT;
+GO
+

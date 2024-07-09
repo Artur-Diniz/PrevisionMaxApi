@@ -91,162 +91,222 @@ namespace PrevisionMaxApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTime"));
 
-                    b.Property<int>("AtaquesperigososMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("AtaquesperigososMedia")
+                        .HasColumnType("real");
 
-                    b.Property<int>("AtaquesperigososMediaCF")
-                        .HasColumnType("int");
+                    b.Property<float>("AtaquesperigososMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("CartoesAmareloMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("CartoesAmareloMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("CartoesAmareloMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("CartoesAmareloMediaCF")
-                        .HasColumnType("int");
+                    b.Property<float>("CartoesAmareloMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float>("CartoesAmareloMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("CartoesAmareloMenor")
                         .HasColumnType("int");
 
-                    b.Property<int>("CartoesVermelhosMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("CartoesAmareloMenorCF")
+                        .HasColumnType("real");
+
+                    b.Property<float>("CartoesVermelhosMedia")
+                        .HasColumnType("real");
 
                     b.Property<int>("DefesaGoleiroMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("DefesaGoleiroMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("DefesaGoleiroMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("DefesaGoleiroMediaCF")
-                        .HasColumnType("int");
+                    b.Property<float>("DefesaGoleiroMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float>("DefesaGoleiroMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("DefesaGoleiroMenor")
                         .HasColumnType("int");
 
+                    b.Property<float>("DefesaGoleiroMenorCF")
+                        .HasColumnType("real");
+
                     b.Property<int>("FaltasMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("FaltasMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("FaltasMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("FaltasMediaCF")
-                        .HasColumnType("int");
+                    b.Property<float>("FaltasMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float>("FaltasMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("FaltasMenor")
                         .HasColumnType("int");
 
+                    b.Property<float>("FaltasMenorCF")
+                        .HasColumnType("real");
+
                     b.Property<int>("GolMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("GolMedias")
-                        .HasColumnType("int");
+                    b.Property<float>("GolMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("GolMediasCF")
-                        .HasColumnType("int");
+                    b.Property<float>("GolMedias")
+                        .HasColumnType("real");
+
+                    b.Property<float>("GolMediasCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("GolMenor")
                         .HasColumnType("int");
 
+                    b.Property<float>("GolMenorCF")
+                        .HasColumnType("real");
+
                     b.Property<int>("GolsSofridosMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("GolsSofridosMedias")
-                        .HasColumnType("int");
+                    b.Property<float>("GolsSofridosMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("GolsSofridosMediasCF")
-                        .HasColumnType("int");
+                    b.Property<float>("GolsSofridosMedias")
+                        .HasColumnType("real");
+
+                    b.Property<float>("GolsSofridosMediasCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("GolsSofridosMenor")
                         .HasColumnType("int");
 
+                    b.Property<float>("GolsSofridosMenorCF")
+                        .HasColumnType("real");
+
                     b.Property<int>("InpedimentosMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("InpedimentosMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("InpedimentosMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("InpedimentosMediaCF")
-                        .HasColumnType("int");
+                    b.Property<float>("InpedimentosMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float>("InpedimentosMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("InpedimentosMenor")
                         .HasColumnType("int");
+
+                    b.Property<float>("InpedimentosMenorCF")
+                        .HasColumnType("real");
 
                     b.Property<string>("NomeTime")
                         .HasMaxLength(200)
                         .HasColumnType("varChar");
 
-                    b.Property<int>("PassesCompletosMaior")
-                        .HasColumnType("int");
+                    b.Property<float>("PassesCompletosMedia")
+                        .HasColumnType("real");
 
-                    b.Property<int>("PassesCompletosMedia")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PassesCompletosMediaCF")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PassesCompletosMenor")
-                        .HasColumnType("int");
+                    b.Property<float>("PassesCompletosMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("PassesTotaisMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("PassesTotaisMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("PassesTotaisMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("PassesTotaisMediaCF")
-                        .HasColumnType("int");
+                    b.Property<float>("PassesTotaisMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float>("PassesTotaisMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("PassesTotaisMenor")
                         .HasColumnType("int");
 
+                    b.Property<float>("PassesTotaisMenorCF")
+                        .HasColumnType("real");
+
                     b.Property<int>("TentativasGolsMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("TentativasGolsMedias")
-                        .HasColumnType("int");
+                    b.Property<float>("TentativasGolsMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("TentativasGolsMediasCF")
-                        .HasColumnType("int");
+                    b.Property<float>("TentativasGolsMedias")
+                        .HasColumnType("real");
+
+                    b.Property<float>("TentativasGolsMediasCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("TentativasGolsMenor")
                         .HasColumnType("int");
 
+                    b.Property<float>("TentativasGolsMenorCF")
+                        .HasColumnType("real");
+
                     b.Property<int>("chutesnoGolsMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("chutesnoGolsMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("chutesnoGolsMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("chutesnoGolsMediaCF")
-                        .HasColumnType("int");
+                    b.Property<float>("chutesnoGolsMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float>("chutesnoGolsMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("chutesnoGolsMenor")
                         .HasColumnType("int");
 
+                    b.Property<float>("chutesnoGolsMenorCF")
+                        .HasColumnType("real");
+
                     b.Property<int>("chutespraforaMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("chutespraforaMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("chutespraforaMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("chutespraforaMediaCF")
-                        .HasColumnType("int");
+                    b.Property<float>("chutespraforaMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float>("chutespraforaMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("chutespraforaMenor")
                         .HasColumnType("int");
 
+                    b.Property<float>("chutespraforaMenorCF")
+                        .HasColumnType("real");
+
                     b.Property<int>("escanteiosMaior")
                         .HasColumnType("int");
 
-                    b.Property<int>("escanteiosMedia")
-                        .HasColumnType("int");
+                    b.Property<float>("escanteiosMaiorCF")
+                        .HasColumnType("real");
 
-                    b.Property<int>("escanteiosMediaCF")
-                        .HasColumnType("int");
+                    b.Property<float>("escanteiosMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float>("escanteiosMediaCF")
+                        .HasColumnType("real");
 
                     b.Property<int>("escanteiosMenor")
                         .HasColumnType("int");
+
+                    b.Property<float>("escanteiosMenorCF")
+                        .HasColumnType("real");
 
                     b.HasKey("IdTime");
 
@@ -435,6 +495,10 @@ namespace PrevisionMaxApi.Migrations
 
                     b.Property<bool>("PartidaAnalise")
                         .HasColumnType("bit");
+
+                    b.Property<string>("TipoPartida")
+                        .HasMaxLength(200)
+                        .HasColumnType("varChar");
 
                     b.Property<DateTime>("data")
                         .HasColumnType("datetime2");

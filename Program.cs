@@ -3,18 +3,19 @@ using PrevisionMax.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Adicione serviços ao contêiner.
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoSomee"));
 });
-builder.Services.AddControllers(); // Adiciona o suporte a controllers
+
+builder.Services.AddControllers(); // Adiciona suporte a controllers
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure o pipeline de solicitação HTTP.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -23,8 +24,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization(); // Adiciona o suporte a autorização
+app.UseAuthorization(); // Adiciona suporte à autorização
 
-app.MapControllers(); // Mapeia as controllers
+app.MapControllers(); // Mapeia os controllers
 
 app.Run();
