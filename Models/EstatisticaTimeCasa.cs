@@ -31,7 +31,9 @@ namespace PrevisionMax.Models
             public int PassesCompletosCasa { get; set; }
             public int AtaquesperigososCasa { get; set; }
 
-
-        
+        public static implicit operator EstatisticaTimesCasa(EstatisticaTimesFora v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

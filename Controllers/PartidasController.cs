@@ -83,46 +83,56 @@ namespace PrevisionMax.ConTrollers
 
         #region Metedos Post
         [HttpPost]
-        public async Task<IActionResult> Add(Partidas p)
+        public async Task<IActionResult> Add(Partidas Partida)
         {
             try
             {
-                await _context.TB_Partidas.AddAsync(p);
+                if (Partida == null)
+                {
+                    return BadRequest("Partida is null.");
+                }
 
+                await _context.TB_Partidas.AddAsync(Partida);
 
+                if (Partida.PartidaAnalise || Partida.TipoPartida == "PartidaAnalise")
+                {
+                    List<int> ids = await GerarEsatisticaGeralAsync(Partida);
+                    // Log para verificar os ids gerados
+                    Console.WriteLine($"IDs Gerados: {string.Join(",", ids)}");
+                }
 
                 await _context.SaveChangesAsync();
-                return Ok(p.idPartida);
+                return Ok(Partida.idPartida);
             }
             catch (System.Exception ex)
             {
+                // Log do erro
+                Console.WriteLine($"Erro: {ex.Message}");
                 return BadRequest(ex.Message);
             }
-
         }
 
         [HttpPost("PartidaComEstatistica")]
-        public async Task<IActionResult> AddGeral([FromBody] PartidaComEstatisticaDTO dto)
+        public async Task<IActionResult> AddGeral(PartidaComEstatisticaDTO dto)
         {
             try
             {
+                string Mensagem = string.Empty;
+
+
                 await _context.Tb_EstatisticaCasa.AddAsync(dto.Casa);
                 await _context.Tb_EstatisticaFora.AddAsync(dto.Fora);
                 await _context.SaveChangesAsync();
-
                 dto.Partida.IdEstatisticaCasa = dto.Casa.IdEstatisticaCasa;
                 dto.Partida.IdEstatisticaFora = dto.Fora.IdEstatisticaFora;
-                await _context.TB_Partidas.AddAsync(dto.Partida);
-
-                List<int> ids = await GerarEsatisticaGeralAsync(dto.Partida);
-
-                string Mensagem = string.Empty;
                 string timeCasa = "EstatisticaGeralTimeCasa";
                 string timefora = "EstatisticaGeralTimeFora";
                 string idEstatisticasCasa = $"Id do {timeCasa}: {dto.Casa.IdEstatisticaCasa}";
                 string idEstatisticasFora = $"Id do {timefora}: {dto.Fora.IdEstatisticaFora}";
 
                 Mensagem = $"Id da Partida Gerada:{dto.Partida.idPartida} \n{idEstatisticasCasa} \n {idEstatisticasFora}";
+
+                await _context.TB_Partidas.AddAsync(dto.Partida);
 
                 await _context.SaveChangesAsync();
                 return Ok(Mensagem);
@@ -167,6 +177,8 @@ namespace PrevisionMax.ConTrollers
             {
                 Partidas pRemover = await _context.TB_Partidas
                 .FirstOrDefaultAsync(p => p.idPartida == id);
+                _context.TB_Partidas.Remove(pRemover);
+
                 int linhasAfetadas = await _context.SaveChangesAsync();
 
                 return Ok(linhasAfetadas);
@@ -209,44 +221,69 @@ namespace PrevisionMax.ConTrollers
 
         private async Task<List<int>> GerarEsatisticaGeralAsync(Partidas partidas)
         {
-            List<EstatisticaTimesCasa> listacasa = await BuscarUltimos5Casa(partidas.NomeTimeCasa, true);
-            List<EstatisticaTimesCasa> casacasa = await BuscarJogosCasacasa(partidas.NomeTimeCasa);
-
-            List<EstatisticaTimesCasa> listafora = await BuscarUltimos5Casa(partidas.NomeTimeCasa, false);
-            List<EstatisticaTimesCasa> forafora = await BuscarPorJogosForaFora(partidas.NomeTimeFora);
-
-            EstatisticaTimes estatisticaCasa = new EstatisticaTimes();
-
-            if (listacasa.Any())
+            try
             {
-                EstatisticaTIMEsDTO time = new EstatisticaTIMEsDTO();
+                if (partidas == null)
+                {
+                    throw new ArgumentNullException(nameof(partidas));
+                }
 
-                time.listacasa = listacasa;
-                time.casacasa = casacasa;
+                Console.WriteLine($"Iniciando geração de estatísticas para a partida entre {partidas.NomeTimeCasa} e {partidas.NomeTimeFora}");
 
-                estatisticaCasa = GerarEstatisticaTime(time);
+                // Busca as estatísticas dos últimos 5 jogos em casa e fora do time da casa
+                List<EstatisticaTimesCasa> listacasa = await BuscarUltimos5Casa(partidas.NomeTimeCasa, true);
+                List<EstatisticaTimesCasa> casacasa = await BuscarJogosCasacasa(partidas.NomeTimeCasa);
+                List<EstatisticaTimesCasa> listafora = await BuscarUltimos5Casa(partidas.NomeTimeFora, false);
+                List<EstatisticaTimesCasa> forafora = await BuscarPorJogosForaFora(partidas.NomeTimeFora);
+
+                EstatisticaTimes estatisticaCasa = new EstatisticaTimes();
+                EstatisticaTimes estatisticaFora = new EstatisticaTimes();
+
+                if (listacasa.Any())
+                {
+                    EstatisticaTIMEsDTO timeCasa = new EstatisticaTIMEsDTO
+                    {
+                        listacasa = listacasa,
+                        casacasa = casacasa
+                    };
+
+                    estatisticaCasa = GerarEstatisticaTime(timeCasa);
+                    estatisticaCasa.NomeTime = partidas.NomeTimeCasa;
+                }
+
+                if (listafora.Any())
+                {
+                    EstatisticaTIMEsDTO timeFora = new EstatisticaTIMEsDTO
+                    {
+                        listacasa = listafora,
+                        casacasa = forafora
+                    };
+
+                    estatisticaFora = GerarEstatisticaTime(timeFora);
+                    estatisticaFora.NomeTime = partidas.NomeTimeFora;
+
+                }
+
+                if (estatisticaCasa != null )
+                {
+                    await _context.Tb_EstatisticaTimes.AddAsync(estatisticaCasa);
+                }
+
+                if (estatisticaFora != null )
+                {
+                    await _context.Tb_EstatisticaTimes.AddAsync(estatisticaFora);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return new List<int> { estatisticaCasa.IdTime, estatisticaFora.IdTime };
             }
-
-
-            EstatisticaTimes estatisticaFora = new EstatisticaTimes();
-
-            if (listafora.Any())
+            catch (System.Exception ex)
             {
-                EstatisticaTIMEsDTO time = new EstatisticaTIMEsDTO();
-
-                time.listacasa = listafora;
-                time.casacasa = forafora;
-                estatisticaFora = GerarEstatisticaTime(time);
+                // Log do erro
+                Console.WriteLine($"Erro ao gerar estatísticas: {ex.Message}");
+                return new List<int>();
             }
-
-
-            await _context.Tb_EstatisticaTimes.AddAsync(estatisticaCasa);
-            await _context.Tb_EstatisticaTimes.AddAsync(estatisticaFora);
-            await _context.SaveChangesAsync();
-
-            List<int> ids = new List<int> { estatisticaCasa.IdTime, estatisticaFora.IdTime };
-
-            return ids;
         }
 
 
@@ -256,18 +293,21 @@ namespace PrevisionMax.ConTrollers
             List<Partidas> casacasa = await _context.TB_Partidas.Where(p => p.NomeTimeCasa == nome
              && p.TipoPartida == "CasaCasa").ToListAsync();
 
-            List<int> idsCasa = new List<int>();
 
+            List<int> idsCasa = new List<int>();
+            
             foreach (var item in casacasa)
             {
                 idsCasa.Add((int)item.IdEstatisticaCasa);
             }
-            EstatisticaTimes estatistica = new EstatisticaTimes();
+            
 
             List<EstatisticaTimesCasa> listacasa = new List<EstatisticaTimesCasa>();
             foreach (var item in idsCasa)
             {
-                EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(p => p.IdEstatisticaCasa == item);
+                EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa
+                .FirstOrDefaultAsync(p => p.IdEstatisticaCasa == item);
+
                 listacasa.Add(casa);
             }
 
@@ -275,7 +315,7 @@ namespace PrevisionMax.ConTrollers
 
         }
 
- 
+
         private async Task<List<EstatisticaTimesCasa>> BuscarPorJogosForaFora(string nome)
         {
             List<Partidas> casacasa = await _context.TB_Partidas.Where(p => p.NomeTimeFora == nome
@@ -285,9 +325,8 @@ namespace PrevisionMax.ConTrollers
 
             foreach (var item in casacasa)
             {
-                idsFora.Add((int)item.IdEstatisticaCasa);
+                idsFora.Add((int)item.IdEstatisticaFora);
             }
-            EstatisticaTimes estatistica = new EstatisticaTimes();
 
             List<EstatisticaTimesFora> listafora = new List<EstatisticaTimesFora>();
             foreach (var item in idsFora)
@@ -394,6 +433,7 @@ namespace PrevisionMax.ConTrollers
                 AtaquesperigososMedia = (float)c.listacasa.Average(c => c.AtaquesperigososCasa),
                 AtaquesperigososMediaCF = (float)c.casacasa.Average(c => c.AtaquesperigososCasa)
             };
+        
 
 
             return estatistica;
@@ -417,6 +457,8 @@ namespace PrevisionMax.ConTrollers
             c.PassesTotaisCasa = f.PassesTotaisFora;
             c.PassesCompletosCasa = f.PassesCompletosFora;
             c.AtaquesperigososCasa = f.AtaquesperigososFora;
+            c.NomeTimeCasa = f.NomeTimeFora;
+            c.AdversarioFora = f.AdversarioCasa;
 
             return c;
 
@@ -447,21 +489,30 @@ namespace PrevisionMax.ConTrollers
         private async Task<List<EstatisticaTimesCasa>> BuscarUltimos5Casa(string nome, bool tipoPartidaCasa)
         {
             string tipopartida = string.Empty;
+
+            List<Partidas> idsPartidas = new List<Partidas>();
             if (tipoPartidaCasa == true)
+            {
                 tipopartida = "Ultimas5Casa";
+
+
+                idsPartidas = await _context.TB_Partidas.Where(p => p.NomeTimeCasa == nome
+            && p.TipoPartida == tipopartida || p.NomeTimeFora == nome
+            && p.TipoPartida == tipopartida).ToListAsync();
+            }
             else
+            {
                 tipopartida = "Ultimas5Fora";
 
-
-            List<Partidas> ids5casa = await _context.TB_Partidas.Where(p => p.NomeTimeCasa == nome
-            && p.TipoPartida == tipopartida ||
-            p.NomeTimeFora == nome
+                idsPartidas = await _context.TB_Partidas.Where(p => p.NomeTimeCasa == nome
+            && p.TipoPartida == tipopartida || p.NomeTimeFora == nome
             && p.TipoPartida == tipopartida).ToListAsync();
+            }
 
             List<int> idsCasa = new List<int>();
             List<int> idsfora = new List<int>();
 
-            foreach (var item in ids5casa)
+            foreach (var item in idsPartidas)
             {
                 if (nome == item.NomeTimeCasa)
                     idsCasa.Add((int)item.IdEstatisticaCasa);
@@ -471,24 +522,32 @@ namespace PrevisionMax.ConTrollers
 
             List<EstatisticaTimesCasa> listacasa = new List<EstatisticaTimesCasa>();
 
-            foreach (var item in idsCasa)
+            if (idsCasa.Count > 0)
             {
-                EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(p => p.IdEstatisticaCasa == item);
-                listacasa.Add(casa);
+                foreach (var item in idsCasa)
+                {
+                    EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(p => p.IdEstatisticaCasa == item);
+                    listacasa.Add(casa);
+                }
             }
+
             List<EstatisticaTimesFora> listafora = new List<EstatisticaTimesFora>();
-            foreach (var item in idsfora)
+            if (idsfora.Count > 0)
             {
-                EstatisticaTimesFora fora = await _context.Tb_EstatisticaFora.FirstOrDefaultAsync(p => p.IdEstatisticaFora == item);
-                listafora.Add(fora);
+                foreach (var item in idsfora)
+                {
+                    EstatisticaTimesFora fora = await _context.Tb_EstatisticaFora.FirstOrDefaultAsync(p => p.IdEstatisticaFora == item);
+                    listafora.Add(fora);
+                }
             }
 
-            foreach (var f in listafora)
-            {
-                EstatisticaTimesCasa c = ConverterForaParaCasa(f);
+            if (listafora.Count > 0)
+                foreach (var f in listafora)
+                {
+                    EstatisticaTimesCasa c = ConverterForaParaCasa(f);
 
-                listacasa.Add(c);
-            }
+                    listacasa.Add(c);
+                }
 
             return listacasa;
 

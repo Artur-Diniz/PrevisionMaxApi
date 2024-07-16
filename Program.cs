@@ -1,31 +1,41 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using PrevisionMax.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicione serviços ao contêiner.
+// Configuração do banco de dados
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoSomee"));
 });
 
-builder.Services.AddControllers(); // Adiciona suporte a controllers
+// Adição de serviços
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Minha API", Version = "v1" });
+});
 
 var app = builder.Build();
 
-// Configure o pipeline de solicitação HTTP.
+// Middleware HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API V1");
+    });
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization(); // Adiciona suporte à autorização
-
-app.MapControllers(); // Mapeia os controllers
+app.UseAuthorization();
+app.MapControllers();
 
 app.Run();

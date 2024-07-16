@@ -109,6 +109,8 @@ namespace PrevisionMax.ConTrollers
             {
                 Classificacao cRemover = await _context
                 .TB_Classificacao.FirstOrDefaultAsync(c => c.idClassficacao == id);
+                _context.TB_Classificacao.Remove(cRemover);
+
                 int linhasAfetadas = await _context.SaveChangesAsync();
 
 

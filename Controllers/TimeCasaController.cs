@@ -27,8 +27,8 @@ namespace PrevisionMax.ConTrollers
             {
                 EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa
                 .FirstOrDefaultAsync(t => t.IdEstatisticaCasa == id);
-                if(casa == null)
-                   throw new Exception("Não foi Encontrado um Time com esse Id");
+                if (casa == null)
+                    throw new Exception("Não foi Encontrado um Time com esse Id");
 
 
                 return Ok(casa);
@@ -102,7 +102,7 @@ namespace PrevisionMax.ConTrollers
         #endregion
 
         #region Metodos Delete
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -110,6 +110,7 @@ namespace PrevisionMax.ConTrollers
             {
                 EstatisticaTimesCasa CasaRemover = await _context.Tb_EstatisticaCasa
                 .FirstOrDefaultAsync(c => c.IdEstatisticaCasa == id);
+                _context.Tb_EstatisticaCasa.Remove(CasaRemover);
                 int linhasAfetadas = await _context.SaveChangesAsync();
 
                 return Ok(linhasAfetadas);

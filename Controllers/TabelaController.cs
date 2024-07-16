@@ -139,6 +139,7 @@ namespace PrevisionMax.ConTrollers
             {
                 TabelaCampeonato tbRemover = await _context
                 .TB_TBCampeonato.FirstOrDefaultAsync(t => t.idCampeonato == id);
+                _context.TB_TBCampeonato.Remove(tbRemover);
                 int linhasAfetadas = await _context.SaveChangesAsync();
 
 

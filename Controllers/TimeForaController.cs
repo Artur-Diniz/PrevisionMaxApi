@@ -110,8 +110,10 @@ namespace PrevisionMax.ConTrollers
         {
             try
             {
-                EstatisticaTimesCasa CasaRemover = await _context.Tb_EstatisticaCasa
-                .FirstOrDefaultAsync(c => c.IdEstatisticaCasa == id);
+                EstatisticaTimesFora CasaRemover = await _context.Tb_EstatisticaFora
+                .FirstOrDefaultAsync(c => c.IdEstatisticaFora == id);
+
+                _context.Tb_EstatisticaFora.Remove(CasaRemover);
                 int linhasAfetadas = await _context.SaveChangesAsync();
 
                 return Ok(linhasAfetadas);

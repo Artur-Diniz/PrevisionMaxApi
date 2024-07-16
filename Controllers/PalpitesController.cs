@@ -157,6 +157,8 @@ namespace PrevisionMax.ConTrollers
             {
                 Palpites pRemover = await _context.TB_Palpites
                 .FirstOrDefaultAsync(p => p.idPalpites == id);
+                _context.TB_Palpites.Remove(pRemover);
+
                 int linhasAfetadas = await _context.SaveChangesAsync();
 
                 return Ok(linhasAfetadas);
@@ -178,21 +180,36 @@ namespace PrevisionMax.ConTrollers
         {
             try
             {
-                List<Partidas> partidas = await _context.TB_Partidas.ToListAsync();
+                List<Partidas> partidas = await _context.TB_Partidas.Where(p => p.PartidaAnalise == true).ToListAsync();
 
                 List<List<Palpites>> palpites = new List<List<Palpites>>();
+
+                List<Palpites> palpite = new List<Palpites>();
+
                 foreach (var item in partidas)
                 {
-                    List<Palpites> palpite = new List<Palpites>();
 
                     palpite = await MetodosPalpites(item);
 
                     palpites.Add(palpite);
+
+
+                }
+                foreach (List<Palpites> i in palpites)
+                {
+                    foreach (var item in palpite)
+                    {
+                        await _context.TB_Palpites.AddAsync(item);
+                    }
+                  
+
                 }
 
 
 
-                return Ok(partidas);
+                await _context.SaveChangesAsync();
+
+                return Ok(palpites);
 
             }
             catch (System.Exception ex)
@@ -213,10 +230,10 @@ namespace PrevisionMax.ConTrollers
                      && p.Campeonato != "Copa do Mundo" && p.Campeonato != "Liga dos Campeões")
             {
                 Palpites under4 = await MetodoUnder4(casa, fora);
-                if (under4 != null)
+                if (under4.descricao != "")
                     palpites.Add(under4);
                 Palpites Over2 = await MetodoOver2(casa, fora);
-                 if (Over2 != null)
+                 if (Over2.descricao != "")
                     palpites.Add(Over2);
             }
 
@@ -229,7 +246,7 @@ namespace PrevisionMax.ConTrollers
             List<Partidas> casa = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
             && e.TipoPartida == "CasaCasa").ToListAsync();
 
-            List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == c.NomeTime
+            List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == f.NomeTime
             && e.TipoPartida == "ForaFora").ToListAsync();
 
             int numOverGols4Home = 0;
@@ -244,7 +261,7 @@ namespace PrevisionMax.ConTrollers
             }
 
             int numOverGols4fora = 0;
-            foreach (var item in casa)
+            foreach (var item in fora)
             {
                 EstatisticaTimesFora home = await _context.Tb_EstatisticaFora
                       .FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
@@ -255,10 +272,10 @@ namespace PrevisionMax.ConTrollers
                     numOverGols4fora += 1;
             }
 
-            if (numOverGols4fora < 3 && numOverGols4Home < 3)
+            if (numOverGols4fora >= 3 || numOverGols4Home >= 3)
             { return palpite; }
 
-            if (c.GolMediasCF <= 2.4 && f.GolMediasCF <= 2.4 && c.GolsSofridosMediasCF <= 2.0 && f.GolsSofridosMaiorCF <= 2)
+            if (c.GolMediasCF <= 2.4 && f.GolMediasCF <= 2.4 && c.GolsSofridosMediasCF <= 2.0 && f.GolsSofridosMediasCF <= 2)
             {
                 int medidor = 0;
                 if (c.GolMediasCF > 1.6)
@@ -319,7 +336,7 @@ namespace PrevisionMax.ConTrollers
                     numOverGols4fora += 1;
             }
 
-            if (numOverGols4fora >= 2 && numOverGols4Home >= 2)
+            if (numOverGols4fora < 1 || numOverGols4Home < 1)
             { return palpite; }
             float mediacasa = c.GolMediasCF + c.GolsSofridosMediasCF;
             float mediafora = f.GolMediasCF + f.GolsSofridosMaiorCF;
@@ -330,7 +347,7 @@ namespace PrevisionMax.ConTrollers
             }
 
             float mediaGolsEsperados = mediacasa + mediafora;
-            if (mediaGolsEsperados <= 3.8)
+            if (mediaGolsEsperados >= 3.8)
             {
                 palpite.tipoAposta = TipoAposta.Gols;
                 palpite.num = 1.5;
