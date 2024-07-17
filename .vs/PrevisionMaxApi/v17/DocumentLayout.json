@@ -3,6 +3,17 @@
   "WorkspaceRootPath": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{3906B967-E3B9-4ABD-BF58-FF0841690A48}|PrevisionMaxApi.csproj|c:\\users\\artur\\desktop\\projetos\\previsionmax\\previsionmaxapi\\controllers\\partidascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3906B967-E3B9-4ABD-BF58-FF0841690A48}|PrevisionMaxApi.csproj|solutionrelative:controllers\\partidascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\artur\\AppData\\Local\\SourceServer\\7e6d85b14fd8935a4ebadefe39837b11dc0600efd699764a1c0f722eaa9737d0\\Controllers\\PartidasController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3906B967-E3B9-4ABD-BF58-FF0841690A48}|PrevisionMaxApi.csproj|c:\\users\\artur\\desktop\\projetos\\previsionmax\\previsionmaxapi\\models\\partidas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3906B967-E3B9-4ABD-BF58-FF0841690A48}|PrevisionMaxApi.csproj|solutionrelative:models\\partidas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3906B967-E3B9-4ABD-BF58-FF0841690A48}|PrevisionMaxApi.csproj|c:\\users\\artur\\desktop\\projetos\\previsionmax\\previsionmaxapi\\controllers\\palpitescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3906B967-E3B9-4ABD-BF58-FF0841690A48}|PrevisionMaxApi.csproj|solutionrelative:controllers\\palpitescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -17,30 +28,69 @@
       "DocumentGroups": [
         {
           "DockedWidth": 1043,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "PalpitesController.cs",
-              "DocumentMoniker": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
-              "ToolTip": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs [Read Only]",
-              "ViewState": "AQIAAK0AAAAAAAAAAAAuwLMAAAANAAAA",
+              "Title": "PartidasController.cs",
+              "DocumentMoniker": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\7e6d85b14fd8935a4ebadefe39837b11dc0600efd699764a1c0f722eaa9737d0\\Controllers\\PartidasController.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\7e6d85b14fd8935a4ebadefe39837b11dc0600efd699764a1c0f722eaa9737d0\\Controllers\\PartidasController.cs",
+              "ToolTip": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\7e6d85b14fd8935a4ebadefe39837b11dc0600efd699764a1c0f722eaa9737d0\\Controllers\\PartidasController.cs [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\7e6d85b14fd8935a4ebadefe39837b11dc0600efd699764a1c0f722eaa9737d0\\Controllers\\PartidasController.cs [Read Only]",
+              "ViewState": "AQIAAFQAAAAAAAAAAAAAAFYAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T22:39:31.441Z",
+              "WhenOpened": "2024-07-17T14:44:17.571Z",
               "EditorCaption": " [Read Only]"
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Partidas.cs",
+              "DocumentMoniker": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\Models\\Partidas.cs",
+              "RelativeDocumentMoniker": "Models\\Partidas.cs",
+              "ToolTip": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\Models\\Partidas.cs",
+              "RelativeToolTip": "Models\\Partidas.cs",
+              "ViewState": "AQIAAA8AAAAAAAAAAAA5wCEAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-17T14:31:00.57Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "PartidasController.cs",
+              "DocumentMoniker": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\Controllers\\PartidasController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PartidasController.cs",
+              "ToolTip": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\Controllers\\PartidasController.cs",
+              "RelativeToolTip": "Controllers\\PartidasController.cs",
+              "ViewState": "AQIAAFYAAAAAAAAAAAApwF8AAAAzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-17T13:50:55.833Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PalpitesController.cs",
+              "DocumentMoniker": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
+              "ToolTip": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
+              "ViewState": "AQIAAK0AAAAAAAAAAAAuwLMAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T22:39:31.441Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "PalpitesController.cs",
               "DocumentMoniker": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\Controllers\\PalpitesController.cs",
               "RelativeDocumentMoniker": "Controllers\\PalpitesController.cs",
               "ToolTip": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\Controllers\\PalpitesController.cs",
               "RelativeToolTip": "Controllers\\PalpitesController.cs",
-              "ViewState": "AQIAAL4AAAAAAAAAAAAuwNUAAAAMAAAA",
+              "ViewState": "AQIAALYAAAAAAAAAAAAuwNUAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-16T21:59:25.047Z",
               "EditorCaption": ""

@@ -91,6 +91,30 @@ namespace PrevisionMax.ConTrollers
                 {
                     return BadRequest("Partida is null.");
                 }
+                if (Partida.IdEstatisticaCasa == 0)
+                    Partida.IdEstatisticaCasa = 4;
+                if (Partida.IdEstatisticaFora == 0)
+                    Partida.IdEstatisticaFora = 1;
+
+                if (Partida.IdEstatisticaCasa.HasValue)
+                {
+                    var estatisticaCasaExistente = await _context.Tb_EstatisticaCasa.FindAsync(Partida.IdEstatisticaCasa.Value);
+                    if (estatisticaCasaExistente == null)
+                    {
+                        return BadRequest("EstatisticaCasa não encontrada.");
+                    }
+                }
+
+                // Verifica se a EstatisticaFora existe, se necessário
+                if (Partida.IdEstatisticaFora.HasValue)
+                {
+                    var estatisticaForaExistente = await _context.Tb_EstatisticaFora.FindAsync(Partida.IdEstatisticaFora.Value);
+                    if (estatisticaForaExistente == null)
+                    {
+                        return BadRequest("EstatisticaFora não encontrada.");
+                    }
+                }
+
 
                 await _context.TB_Partidas.AddAsync(Partida);
 
@@ -98,7 +122,6 @@ namespace PrevisionMax.ConTrollers
                 {
                     List<int> ids = await GerarEsatisticaGeralAsync(Partida);
                     // Log para verificar os ids gerados
-                    Console.WriteLine($"IDs Gerados: {string.Join(",", ids)}");
                 }
 
                 await _context.SaveChangesAsync();
