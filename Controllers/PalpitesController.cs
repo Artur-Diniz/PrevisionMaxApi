@@ -170,6 +170,28 @@ namespace PrevisionMax.ConTrollers
 
         }
 
+        [HttpDelete("DeleteAllPalpites")]
+        public async Task<IActionResult> DeleteAll()
+        {
+            try
+            {
+                List<Palpites> palpites = await _context.TB_Palpites.ToListAsync();
+                foreach (var item in palpites)
+                {
+                    _context.TB_Palpites.Remove(item);
+                }             
+
+                int linhasAfetadas = await _context.SaveChangesAsync();
+
+                return Ok(linhasAfetadas);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
         #endregion
 
 
@@ -191,37 +213,27 @@ namespace PrevisionMax.ConTrollers
 
                     palpite = await MetodosPalpites(item);
 
-                    palpites.Add(palpite);
+                    if (palpite.Count != 0)
+                        palpites.Add(palpite);
 
 
                 }
-                foreach (List<Palpites> i in palpites)
-                {
-                    foreach (var item in palpite)
-                    {
-                        await _context.TB_Palpites.AddAsync(item);
-                    }
-                  
-
-                }
-
-
-
-                await _context.SaveChangesAsync();
 
                 return Ok(palpites);
-
             }
             catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
         private async Task<List<Palpites>> MetodosPalpites(Partidas p)
         {
             List<Palpites> palpites = new List<Palpites>();
+            string casaSemParenteses = RemoveParenteses(p.NomeTimeCasa);
+            string foraSemParenteses = RemoveParenteses(p.NomeTimeFora);
+            p.NomeTimeFora = foraSemParenteses;
+            p.NomeTimeCasa = casaSemParenteses;
             EstatisticaTimes casa = await _context.Tb_EstatisticaTimes.FirstOrDefaultAsync(e => e.NomeTime == p.NomeTimeCasa);
             EstatisticaTimes fora = await _context.Tb_EstatisticaTimes.FirstOrDefaultAsync(e => e.NomeTime == p.NomeTimeFora);
 
@@ -231,10 +243,28 @@ namespace PrevisionMax.ConTrollers
             {
                 Palpites under4 = await MetodoUnder4(casa, fora);
                 if (under4.descricao != "")
+                {
+                    under4.idPartida = p.idPartida;
                     palpites.Add(under4);
+                    await _context.TB_Palpites.AddAsync(under4);
+                    await _context.SaveChangesAsync();
+                }
                 Palpites Over2 = await MetodoOver2(casa, fora);
-                 if (Over2.descricao != "")
+                if (Over2.descricao != "")
+                {
+                    Over2.idPartida = p.idPartida;
                     palpites.Add(Over2);
+                    await _context.TB_Palpites.AddAsync(Over2);
+                    await _context.SaveChangesAsync();
+                }
+                Palpites Over1Gol = await GolTime(casa, fora);
+                if (Over1Gol.descricao != "")
+                {
+                    Over1Gol.idPartida = p.idPartida;
+                    palpites.Add(Over1Gol);
+                    await _context.TB_Palpites.AddAsync(Over1Gol);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             return palpites;
@@ -298,8 +328,8 @@ namespace PrevisionMax.ConTrollers
                 palpite.tipoAposta = TipoAposta.Gols;
                 palpite.num = 3.5;
 
-                palpite.descricao = "Menos de 3.5 Gols para Essa Partida por Representarem" +
-                " Baixa Media de Gols Esperadas para esse Partida";
+                palpite.descricao = $"Menos de 3.5 Gols para Essa Partida por Representarem" +
+                $" uma espectativa de Gols abaixo de 4 gols Esperadas para esse Partida entre {c.NomeTime} e {f.NomeTime} ";
             }
             return palpite;
         }
@@ -310,7 +340,7 @@ namespace PrevisionMax.ConTrollers
             List<Partidas> casa = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
             && e.TipoPartida == "CasaCasa").ToListAsync();
 
-            List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == c.NomeTime
+            List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == f.NomeTime
             && e.TipoPartida == "ForaFora").ToListAsync();
 
             int numOverGols4Home = 0;
@@ -336,7 +366,7 @@ namespace PrevisionMax.ConTrollers
                     numOverGols4fora += 1;
             }
 
-            if (numOverGols4fora < 1 || numOverGols4Home < 1)
+            if (numOverGols4fora < 0 || numOverGols4Home < 0)
             { return palpite; }
             float mediacasa = c.GolMediasCF + c.GolsSofridosMediasCF;
             float mediafora = f.GolMediasCF + f.GolsSofridosMaiorCF;
@@ -346,18 +376,128 @@ namespace PrevisionMax.ConTrollers
                 return palpite;
             }
 
+            float mediaAtaque = c.GolMediasCF + f.GolMediasCF;
+            if (c.GolMediasCF < 0.8 && f.GolMediasCF < 0.8)
+            {
+                return palpite;
+            }
+            if (mediaAtaque < 2.2)
+                return palpite;
+
+
             float mediaGolsEsperados = mediacasa + mediafora;
             if (mediaGolsEsperados >= 3.8)
             {
                 palpite.tipoAposta = TipoAposta.Gols;
                 palpite.num = 1.5;
 
-                palpite.descricao = "Mais de 1.5 Gols para Essa Partida por Representarem" +
-                " Constante  Media de Gols Esperadas para esse Partida";
+                palpite.descricao = $"Mais de 1.5 Gols para Essa Partida por Representarem" +
+                $" Constante  Media de Gols Esperadas para esse Partida entre {c.NomeTime} e {f.NomeTime} ";
             }
             return palpite;
         }
-        
+
+        private static string RemoveParenteses(string input)
+        {
+            while (input.Contains("(") && input.Contains(")"))
+            {
+                int startIndex = input.IndexOf("(");
+                int endIndex = input.IndexOf(")", startIndex) + 1;
+                if (startIndex >= 0 && endIndex > startIndex)
+                {
+                    input = input.Remove(startIndex, endIndex - startIndex).Trim();
+                }
+            }
+            return input;
+        }
+
+        private async Task<Palpites> GolTime(EstatisticaTimes c, EstatisticaTimes f)
+        {
+            Palpites palpites = new Palpites();
+
+            bool CasaMarca= false;
+            if (c.GolMenorCF>0)
+            {
+                CasaMarca = true;
+            }else
+            {
+                int golcasa = 0;
+                if (c.GolMediasCF > 1.1)
+                {
+                    List<Partidas> casa = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
+               && e.TipoPartida == "CasaCasa").ToListAsync();
+
+                    foreach (var item in casa)
+                    {
+                        EstatisticaTimesCasa home = await _context.Tb_EstatisticaCasa
+                              .FirstOrDefaultAsync(e => e.IdEstatisticaCasa == item.IdEstatisticaCasa);
+                        if (home.GolsCasa > 0)
+                            golcasa++;
+                    }
+                    if (golcasa > 3)
+                    {
+                        CasaMarca = true;
+                    }
+                }
+
+            }
+
+            bool ForaMarca = false;
+            if (f.GolMenorCF > 0)
+            {
+                ForaMarca = true;
+            }
+            else
+            {
+                int golfora = 0;
+                if (f.GolMediasCF > 1.1)
+                {
+                    List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == f.NomeTime
+                && e.TipoPartida == "ForaFora").ToListAsync();
+
+                    foreach (var item in fora)
+                    {
+                        EstatisticaTimesFora home = await _context.Tb_EstatisticaFora
+                              .FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
+                        if (home.GolsFora > 0)
+                            golfora++;
+                    }
+                    if (golfora > 3)
+                    {
+                        ForaMarca = true;
+                    }
+                }
+
+                
+            }
+
+            if (CasaMarca && ForaMarca)
+            {
+                palpites.tipoAposta = TipoAposta.Gols;
+                palpites.num = 1.5;
+
+                palpites.descricao = $"Ambas Marcam pela" +
+                $" Constante  Media de Gols Esperadas para esse Partida entre {c.NomeTime} e {f.NomeTime} ";
+            }else
+            if (CasaMarca)
+            {
+                palpites.tipoAposta = TipoAposta.Gols;
+                palpites.num = 0.5;
+
+                palpites.descricao = $"Casa Marca pela" +
+                $" Constante  Media de Gols Em Casa  na Partida entre {c.NomeTime} e {f.NomeTime} ";
+            }else
+            if (ForaMarca)
+            {
+                palpites.tipoAposta = TipoAposta.Gols;
+                palpites.num = 0.5;
+
+                palpites.descricao = $"Fora Marca pela" +
+                $" Constante  Media de Gols Jogando Fora na Partida entre {c.NomeTime} e {f.NomeTime} ";
+            }
+
+            return palpites;
+        }
 
         #endregion
 

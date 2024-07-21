@@ -1,10 +1,5 @@
-C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\web.config
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\appsettings.json
-C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\appsettings.Development.json
-C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\appsettings.json
-C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\PrevisionMaxApi.deps.json
-C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\PrevisionMaxApi.runtimeconfig.json
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\PrevisionMaxApi.exe
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\PrevisionMaxApi.deps.json
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\PrevisionMaxApi.runtimeconfig.json
@@ -141,3 +136,8 @@ C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\obj\Debug\net8.0\re
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\obj\Debug\net8.0\PrevisionMaxApi.pdb
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\obj\Debug\net8.0\PrevisionMaxApi.genruntimeconfig.cache
 C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\obj\Debug\net8.0\ref\PrevisionMaxApi.dll
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\web.config
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\appsettings.Development.json
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\appsettings.json
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\PrevisionMaxApi.deps.json
+C:\Users\artur\Desktop\Projetos\PrevisionMax\PrevisionMaxApi\bin\Debug\net8.0\publish\PrevisionMaxApi.runtimeconfig.json

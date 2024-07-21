@@ -250,6 +250,11 @@ namespace PrevisionMax.ConTrollers
                 {
                     throw new ArgumentNullException(nameof(partidas));
                 }
+                string nometimecasa = RemoveParenteses(partidas.NomeTimeCasa);
+                string nometimefora = RemoveParenteses(partidas.NomeTimeFora);
+                partidas.NomeTimeCasa = nometimecasa;
+                partidas.NomeTimeFora = nometimefora;
+
 
                 Console.WriteLine($"Iniciando geração de estatísticas para a partida entre {partidas.NomeTimeCasa} e {partidas.NomeTimeFora}");
 
@@ -261,9 +266,37 @@ namespace PrevisionMax.ConTrollers
 
                 EstatisticaTimes estatisticaCasa = new EstatisticaTimes();
                 EstatisticaTimes estatisticaFora = new EstatisticaTimes();
-
-                if (listacasa.Any())
+                EstatisticaTimesCasa nulo = new EstatisticaTimesCasa
                 {
+                    IdEstatisticaCasa =99,
+                    NomeTimeCasa = "Nulo",
+                    GolsCasa = -1,
+                    GolsSofridosCasa = -1,
+                    AdversarioFora = "",
+
+                    TentativasGolsCasa = -1,
+                    chutesnoGolsCasa = -1,
+                    chutespraforaCasa = -1,
+                    escanteiosCasa = -1,
+                    InpedimentosCasa = -1,
+                    DefesaGoleiroCasa = -1,
+                    FaltasCasas = -1,
+                    CartoesVermelhosCasa = -1,
+                    CartoesAmareloCasa = -1,
+                    PassesTotaisCasa = -1,
+                    PassesCompletosCasa = -1,
+                    AtaquesperigososCasa = -1
+
+                };
+
+                if (listacasa.Count >0 || casacasa.Count >0)
+                {
+                    if (listacasa.Count == 0)                    
+                        listacasa.Add(nulo);
+                    
+                    if (casacasa.Count == 0)
+                        casacasa.Add(nulo);
+                    
                     EstatisticaTIMEsDTO timeCasa = new EstatisticaTIMEsDTO
                     {
                         listacasa = listacasa,
@@ -274,8 +307,14 @@ namespace PrevisionMax.ConTrollers
                     estatisticaCasa.NomeTime = partidas.NomeTimeCasa;
                 }
 
-                if (listafora.Any())
+                if (listafora.Any() &&  forafora.Any())
                 {
+                    if (listafora.Count == 0)
+                        listafora.Add(nulo);
+
+                    if (forafora.Count == 0)
+                        forafora.Add(nulo);
+
                     EstatisticaTIMEsDTO timeFora = new EstatisticaTIMEsDTO
                     {
                         listacasa = listafora,
@@ -287,12 +326,12 @@ namespace PrevisionMax.ConTrollers
 
                 }
 
-                if (estatisticaCasa != null )
+                if ("" != estatisticaCasa.NomeTime)
                 {
                     await _context.Tb_EstatisticaTimes.AddAsync(estatisticaCasa);
                 }
 
-                if (estatisticaFora != null )
+                if ("" != estatisticaFora.NomeTime)
                 {
                     await _context.Tb_EstatisticaTimes.AddAsync(estatisticaFora);
                 }
@@ -318,12 +357,12 @@ namespace PrevisionMax.ConTrollers
 
 
             List<int> idsCasa = new List<int>();
-            
+
             foreach (var item in casacasa)
             {
                 idsCasa.Add((int)item.IdEstatisticaCasa);
             }
-            
+
 
             List<EstatisticaTimesCasa> listacasa = new List<EstatisticaTimesCasa>();
             foreach (var item in idsCasa)
@@ -456,7 +495,7 @@ namespace PrevisionMax.ConTrollers
                 AtaquesperigososMedia = (float)c.listacasa.Average(c => c.AtaquesperigososCasa),
                 AtaquesperigososMediaCF = (float)c.casacasa.Average(c => c.AtaquesperigososCasa)
             };
-        
+
 
 
             return estatistica;
@@ -576,6 +615,19 @@ namespace PrevisionMax.ConTrollers
 
         }
 
+        private static string RemoveParenteses(string input)
+        {
+            while (input.Contains("(") && input.Contains(")"))
+            {
+                int startIndex = input.IndexOf("(");
+                int endIndex = input.IndexOf(")", startIndex) + 1;
+                if (startIndex >= 0 && endIndex > startIndex)
+                {
+                    input = input.Remove(startIndex, endIndex - startIndex).Trim();
+                }
+            }
+            return input;
+        }
 
         #endregion
 
