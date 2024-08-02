@@ -54,8 +54,30 @@ namespace PrevisionMax.ConTrollers
 
         }
 
+        [HttpDelete("DeletarEstatisticas")]
+        public async Task<IActionResult> DeleteAll()
+        {
+            try
+            {
+                List<EstatisticaTimes> estatisticaTimes = await _context.Tb_EstatisticaTimes.ToListAsync();
+                foreach (var item in estatisticaTimes)
+                {
+                    _context.Tb_EstatisticaTimes.Remove(item);
+                }
+
+                int linhasAfetadas = await _context.SaveChangesAsync();
+
+                return Ok(linhasAfetadas);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
         #endregion
-      
+
 
     }
 }

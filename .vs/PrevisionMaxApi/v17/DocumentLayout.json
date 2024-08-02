@@ -11,7 +11,11 @@
       "RelativeMoniker": "D:0:0:{3906B967-E3B9-4ABD-BF58-FF0841690A48}|PrevisionMaxApi.csproj|solutionrelative:controllers\\partidascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\artur\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\artur\\AppData\\Local\\SourceServer\\314bcbaebbc5bda2acc98c422c0c18019f0dec74e7a2d8bff411ba66dce46e60\\Controllers\\PartidasController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3906B967-E3B9-4ABD-BF58-FF0841690A48}|PrevisionMaxApi.csproj|c:\\users\\artur\\desktop\\projetos\\previsionmax\\previsionmaxapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3906B967-E3B9-4ABD-BF58-FF0841690A48}|PrevisionMaxApi.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,8 +25,29 @@
       "DocumentGroups": [
         {
           "DockedWidth": 1043,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PartidasController.cs",
+              "DocumentMoniker": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\314bcbaebbc5bda2acc98c422c0c18019f0dec74e7a2d8bff411ba66dce46e60\\Controllers\\PartidasController.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\314bcbaebbc5bda2acc98c422c0c18019f0dec74e7a2d8bff411ba66dce46e60\\Controllers\\PartidasController.cs",
+              "ToolTip": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\314bcbaebbc5bda2acc98c422c0c18019f0dec74e7a2d8bff411ba66dce46e60\\Controllers\\PartidasController.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\314bcbaebbc5bda2acc98c422c0c18019f0dec74e7a2d8bff411ba66dce46e60\\Controllers\\PartidasController.cs",
+              "ViewState": "AQIAABwBAAAAAAAAAAAUwIwCAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-29T05:12:19.553Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -31,10 +56,22 @@
               "RelativeDocumentMoniker": "Controllers\\PalpitesController.cs",
               "ToolTip": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\Controllers\\PalpitesController.cs",
               "RelativeToolTip": "Controllers\\PalpitesController.cs",
-              "ViewState": "AQIAAA0BAAAAAAAAAAAuwJ4BAAAIAAAA",
+              "ViewState": "AQIAAKgCAAAAAAAAAAAIwB8DAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T18:18:31.184Z",
+              "WhenOpened": "2024-07-29T04:38:38.167Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-07-29T02:47:46.635Z"
             },
             {
               "$type": "Document",
@@ -44,22 +81,9 @@
               "RelativeDocumentMoniker": "Controllers\\PartidasController.cs",
               "ToolTip": "C:\\Users\\artur\\Desktop\\Projetos\\PrevisionMax\\PrevisionMaxApi\\Controllers\\PartidasController.cs",
               "RelativeToolTip": "Controllers\\PartidasController.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAywFYAAAAIAAAA",
+              "ViewState": "AQIAAIEBAAAAAAAAAAAgwHkCAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T17:26:05.095Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PalpitesController.cs",
-              "DocumentMoniker": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
-              "ToolTip": "C:\\Users\\artur\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
-              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\SourceServer\\aca957a22e40ec69fea4f67a6f540af2a5af9dae21e4033e8d93777caa1e0262\\Controllers\\PalpitesController.cs",
-              "ViewState": "AQIAAIAAAAAAAAAAAAAIwLMAAAANAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T22:39:31.441Z",
+              "WhenOpened": "2024-07-27T20:34:11.334Z",
               "EditorCaption": ""
             }
           ]
@@ -70,11 +94,7 @@
           "Children": [
             {
               "$type": "Bookmark",
-              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         }

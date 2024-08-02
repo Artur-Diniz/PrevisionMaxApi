@@ -21,11 +21,13 @@ namespace PrevisionMax.Models
         public int? chutesnoGolsFora { get; set; }
         public int chutespraforaFora { get; set; }
         public int? escanteiosFora { get; set; }
+        public int? escanteiosForaSofridos { get; set; }
         public int? InpedimentosFora { get; set; }
         public int? DefesaGoleiroFora { get; set; }
         public int FaltasForas { get; set; }
         public int? CartoesVermelhosFora { get; set; }
         public int? CartoesAmareloFora { get; set; }
+        public int? CartoesAmareloForaSofridos { get; set; }
         public int PassesTotaisFora { get; set; }
         public int PassesCompletosFora { get; set; }
         public int AtaquesperigososFora { get; set; }

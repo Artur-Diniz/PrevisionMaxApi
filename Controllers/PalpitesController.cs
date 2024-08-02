@@ -179,7 +179,7 @@ namespace PrevisionMax.ConTrollers
                 foreach (var item in palpites)
                 {
                     _context.TB_Palpites.Remove(item);
-                }             
+                }
 
                 int linhasAfetadas = await _context.SaveChangesAsync();
 
@@ -237,9 +237,9 @@ namespace PrevisionMax.ConTrollers
             EstatisticaTimes casa = await _context.Tb_EstatisticaTimes.FirstOrDefaultAsync(e => e.NomeTime == p.NomeTimeCasa);
             EstatisticaTimes fora = await _context.Tb_EstatisticaTimes.FirstOrDefaultAsync(e => e.NomeTime == p.NomeTimeFora);
 
-            if (p.Campeonato != "Eurocopa" && p.Campeonato != "Copa América"
+            if (p.Campeonato != "Eurocopa" && p.Campeonato != "Copa America"
                     && p.Campeonato != "Copa Sul-Americana" && p.Campeonato != "Copa Libertadores"
-                     && p.Campeonato != "Copa do Mundo" && p.Campeonato != "Liga dos Campeões")
+                     && p.Campeonato != "Copa do Mundo" && p.Campeonato != "Liga dos Campeoes")
             {
                 Palpites under4 = await MetodoUnder4(casa, fora);
                 if (under4.descricao != "")
@@ -265,6 +265,38 @@ namespace PrevisionMax.ConTrollers
                     await _context.TB_Palpites.AddAsync(Over1Gol);
                     await _context.SaveChangesAsync();
                 }
+                Palpites underCantos = await UnderCantos(casa, fora);
+                if (underCantos.descricao != "")
+                {
+                    underCantos.idPartida = p.idPartida;
+                    palpites.Add(underCantos);
+                    await _context.TB_Palpites.AddAsync(underCantos);
+                    await _context.SaveChangesAsync();
+                }
+                Palpites overcantos = await OverCantos(casa, fora);
+                if (overcantos.descricao != "")
+                {
+                    overcantos.idPartida = p.idPartida;
+                    palpites.Add(overcantos);
+                    await _context.TB_Palpites.AddAsync(overcantos);
+                    await _context.SaveChangesAsync();
+                }
+                Palpites underCartao = await UnderCartao(casa, fora);
+                if (underCartao.descricao != "")
+                {
+                    underCartao.idPartida = p.idPartida;
+                    palpites.Add(underCartao);
+                    await _context.TB_Palpites.AddAsync(underCartao);
+                    await _context.SaveChangesAsync();
+                }
+                Palpites overcartao = await OverCartao(casa, fora);
+                if (overcartao.descricao != "")
+                {
+                    overcartao.idPartida = p.idPartida;
+                    palpites.Add(overcartao);
+                    await _context.TB_Palpites.AddAsync(overcartao);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             return palpites;
@@ -273,11 +305,21 @@ namespace PrevisionMax.ConTrollers
         private async Task<Palpites> MetodoUnder4(EstatisticaTimes c, EstatisticaTimes f)
         {
             Palpites palpite = new Palpites();
+
+            if (c == null || f == null)
+            {
+                return palpite;
+            }
             List<Partidas> casa = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
             && e.TipoPartida == "CasaCasa").ToListAsync();
 
             List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == f.NomeTime
             && e.TipoPartida == "ForaFora").ToListAsync();
+
+            if (casa.Count < 3 && fora.Count < 3)
+            {
+                return palpite;
+            }
 
             int numOverGols4Home = 0;
             foreach (var item in casa)
@@ -302,7 +344,7 @@ namespace PrevisionMax.ConTrollers
                     numOverGols4fora += 1;
             }
 
-            if (numOverGols4fora >= 3 || numOverGols4Home >= 3)
+            if (numOverGols4fora > 1 || numOverGols4Home > 1)
             { return palpite; }
 
             if (c.GolMediasCF <= 2.4 && f.GolMediasCF <= 2.4 && c.GolsSofridosMediasCF <= 2.0 && f.GolsSofridosMediasCF <= 2)
@@ -320,7 +362,7 @@ namespace PrevisionMax.ConTrollers
                 if (medidor > 1)
                     return palpite;
             }
-            float mediaGolsEsperados = c.GolMediasCF + f.GolMediasCF + c.GolsSofridosMediasCF + f.GolsSofridosMaiorCF;
+            float mediaGolsEsperados = c.GolMediasCF + f.GolMediasCF + c.GolsSofridosMediasCF + f.GolsSofridosMediasCF;
 
 
             if (mediaGolsEsperados <= 4.2)
@@ -337,11 +379,21 @@ namespace PrevisionMax.ConTrollers
         private async Task<Palpites> MetodoOver2(EstatisticaTimes c, EstatisticaTimes f)
         {
             Palpites palpite = new Palpites();
+
+            if (c == null || f == null)
+            {
+                return palpite;
+            }
             List<Partidas> casa = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
             && e.TipoPartida == "CasaCasa").ToListAsync();
 
             List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == f.NomeTime
             && e.TipoPartida == "ForaFora").ToListAsync();
+
+            if (casa.Count < 3 && fora.Count < 3)
+            {
+                return palpite;
+            }
 
             int numOverGols4Home = 0;
             foreach (var item in casa)
@@ -355,7 +407,7 @@ namespace PrevisionMax.ConTrollers
             }
 
             int numOverGols4fora = 0;
-            foreach (var item in casa)
+            foreach (var item in fora)
             {
                 EstatisticaTimesFora home = await _context.Tb_EstatisticaFora
                       .FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
@@ -366,8 +418,10 @@ namespace PrevisionMax.ConTrollers
                     numOverGols4fora += 1;
             }
 
-            if (numOverGols4fora < 0 || numOverGols4Home < 0)
+            if (numOverGols4fora < 1 || numOverGols4Home < 1)
             { return palpite; }
+
+
             float mediacasa = c.GolMediasCF + c.GolsSofridosMediasCF;
             float mediafora = f.GolMediasCF + f.GolsSofridosMaiorCF;
 
@@ -377,10 +431,11 @@ namespace PrevisionMax.ConTrollers
             }
 
             float mediaAtaque = c.GolMediasCF + f.GolMediasCF;
-            if (c.GolMediasCF < 0.8 && f.GolMediasCF < 0.8)
+            if (c.GolMediasCF < 0.8 || f.GolMediasCF < 0.8)
             {
                 return palpite;
             }
+
             if (mediaAtaque < 2.2)
                 return palpite;
 
@@ -415,60 +470,70 @@ namespace PrevisionMax.ConTrollers
         {
             Palpites palpites = new Palpites();
 
-            bool CasaMarca= false;
-            if (c.GolMenorCF>0)
+            if (c == null || f == null)
             {
-                CasaMarca = true;
-            }else
-            {
-                int golcasa = 0;
-                if (c.GolMediasCF > 1.1)
-                {
-                    List<Partidas> casa = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
-               && e.TipoPartida == "CasaCasa").ToListAsync();
-
-                    foreach (var item in casa)
-                    {
-                        EstatisticaTimesCasa home = await _context.Tb_EstatisticaCasa
-                              .FirstOrDefaultAsync(e => e.IdEstatisticaCasa == item.IdEstatisticaCasa);
-                        if (home.GolsCasa > 0)
-                            golcasa++;
-                    }
-                    if (golcasa > 3)
-                    {
-                        CasaMarca = true;
-                    }
-                }
-
+                return palpites;
             }
+
+            bool CasaMarca = false;
+
+            List<Partidas> casa = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
+             && e.TipoPartida == "CasaCasa").ToListAsync();
 
             bool ForaMarca = false;
-            if (f.GolMenorCF > 0)
+            List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == f.NomeTime
+            && e.TipoPartida == "ForaFora").ToListAsync();
+
+            if (casa.Count < 3 && fora.Count < 3)
             {
-                ForaMarca = true;
+                return palpites;
             }
-            else
+
+            int golcasa = 0, golsofridoCasa = 0;
+            foreach (var item in casa)
             {
-                int golfora = 0;
-                if (f.GolMediasCF > 1.1)
+                EstatisticaTimesCasa home = await _context.Tb_EstatisticaCasa
+                      .FirstOrDefaultAsync(e => e.IdEstatisticaCasa == item.IdEstatisticaCasa);
+                if (home.GolsCasa > 0)
+                    golcasa++;
+
+                if (home.GolsSofridosCasa > 0)
+                    golsofridoCasa++;
+            }
+
+            int golfora = 0, golssofridosfora = 0;
+            foreach (var item in fora)
+            {
+                EstatisticaTimesFora home = await _context.Tb_EstatisticaFora
+                      .FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
+                if (home.GolsFora > 0)
+                    golfora++;
+
+                if (home.GolsSofridosFora > 0)
+                    golssofridosfora++;
+            }
+
+            if (golcasa > 3 && golssofridosfora > 2)
+            {
+                if (c.GolMediasCF > 1.15)
                 {
-                    List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == f.NomeTime
-                && e.TipoPartida == "ForaFora").ToListAsync();
-
-                    foreach (var item in fora)
-                    {
-                        EstatisticaTimesFora home = await _context.Tb_EstatisticaFora
-                              .FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
-                        if (home.GolsFora > 0)
-                            golfora++;
-                    }
-                    if (golfora > 3)
-                    {
-                        ForaMarca = true;
-                    }
+                    CasaMarca = true;
                 }
-
-                
+                if (c.GolMenorCF > 0)
+                {
+                    CasaMarca = true;
+                }
+            }
+            if (golfora > 3 && golsofridoCasa > 2)
+            {
+                if (f.GolMediasCF > 1.15)
+                {
+                    ForaMarca = true;
+                }
+                if (f.GolMenorCF > 0)
+                {
+                    ForaMarca = true;
+                }
             }
 
             if (CasaMarca && ForaMarca)
@@ -478,7 +543,8 @@ namespace PrevisionMax.ConTrollers
 
                 palpites.descricao = $"Ambas Marcam pela" +
                 $" Constante  Media de Gols Esperadas para esse Partida entre {c.NomeTime} e {f.NomeTime} ";
-            }else
+            }
+            else
             if (CasaMarca)
             {
                 palpites.tipoAposta = TipoAposta.Gols;
@@ -486,7 +552,8 @@ namespace PrevisionMax.ConTrollers
 
                 palpites.descricao = $"Casa Marca pela" +
                 $" Constante  Media de Gols Em Casa  na Partida entre {c.NomeTime} e {f.NomeTime} ";
-            }else
+            }
+            else
             if (ForaMarca)
             {
                 palpites.tipoAposta = TipoAposta.Gols;
@@ -499,8 +566,234 @@ namespace PrevisionMax.ConTrollers
             return palpites;
         }
 
-        #endregion
 
+        private async Task<Palpites> UnderCantos(EstatisticaTimes c, EstatisticaTimes f)
+        {
+            Palpites palpites = new Palpites();
+
+            if (c == null || f == null)
+            {
+                return palpites;
+            }
+
+            if (c.escanteiosMediaCF < 7 && f.escanteiosMediaCF < 7)
+            {
+                List<Partidas> confrontos = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
+            && e.TipoPartida == "ConfrontoDireto" && e.NomeTimeFora == f.NomeTime || e.NomeTimeCasa == f.NomeTime
+            && e.TipoPartida == "ConfrontoDireto" && e.NomeTimeFora == c.NomeTime).ToListAsync();
+
+                int underescateios = 0;
+                if (confrontos.Count > 2)
+                {
+                    foreach (var item in confrontos)
+                    {
+                        EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(e => e.IdEstatisticaCasa == item.IdEstatisticaCasa);
+
+                        EstatisticaTimesFora fora = await _context.Tb_EstatisticaFora.FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
+
+                        int CastosTotal = (int)casa.escanteiosCasa + (int)fora.escanteiosFora;
+
+                        if (CastosTotal < 11)
+                            underescateios++;
+                    }
+                }
+
+                bool escanteios = false;
+                if (underescateios > 2 && confrontos.Count == 3)
+                    escanteios = true;
+                if (underescateios > 2 && confrontos.Count == 4)
+                    escanteios = true;
+                if (underescateios > 3 && confrontos.Count == 5)
+                    escanteios = true;
+
+                if (escanteios)
+                {
+                    palpites.tipoAposta = TipoAposta.Escanteios;
+                    palpites.num = 12.5;
+
+                    palpites.descricao = $"Under 12.5" +
+                 $" os confronstos entre {c.NomeTime} e {f.NomeTime} apresentaram media baixa de escanteios entre " +
+                 $" alem de apresentarem uma baixa media em suas partidas";
+
+                }
+            }
+            return palpites;
+        }
+
+
+        private async Task<Palpites> OverCantos(EstatisticaTimes c, EstatisticaTimes f)
+        {
+            Palpites palpites = new Palpites();
+
+            if (c == null || f == null)
+            {
+                return palpites;
+            }
+            bool escanteios = false;
+
+            if (c.escanteiosMediaCF < 5 && f.escanteiosMediaCF < 5)
+            {
+                List<Partidas> confrontos = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
+            && e.TipoPartida == "ConfrontoDireto" && e.NomeTimeFora == f.NomeTime || e.NomeTimeCasa == f.NomeTime
+            && e.TipoPartida == "ConfrontoDireto" && e.NomeTimeFora == c.NomeTime).ToListAsync();
+
+                int underescateios = 0;
+                if (confrontos.Count > 2)
+                {
+                    foreach (var item in confrontos)
+                    {
+                        EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(e => e.IdEstatisticaCasa == item.IdEstatisticaCasa);
+
+                        EstatisticaTimesFora fora = await _context.Tb_EstatisticaFora.FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
+
+                        int CastosTotal = (int)casa.escanteiosCasa + (int)fora.escanteiosFora;
+
+                        if (CastosTotal > 10)
+                            underescateios++;
+                    }
+                }
+
+                if (underescateios > 2 && confrontos.Count == 3)
+                    escanteios = true;
+                if (underescateios > 2 && confrontos.Count == 4)
+                    escanteios = true;
+                if (underescateios > 3 && confrontos.Count == 5)
+                    escanteios = true;
+
+
+            }
+            if (escanteios)
+            {
+                palpites.tipoAposta = TipoAposta.Escanteios;
+                palpites.num = 9.5;
+
+                palpites.descricao = $"over 9.5" +
+                $" os confronstos entre {c.NomeTime} e {f.NomeTime} apresentaram Alta media de escanteios " +
+                $" alem de apresentarem uma media alta em suas partidas";
+            }
+            return palpites;
+        }
+
+
+        private async Task<Palpites> OverCartao(EstatisticaTimes c, EstatisticaTimes f)
+        {
+            Palpites palpites = new Palpites();
+
+            if (c == null || f == null)
+            {
+                return palpites;
+            }
+
+            float cartoesmediacasa = c.CartoesAmareloMediaCF + c.CartoesAmareloMediaSofridosCF;
+            float cartoesmediafora = f.CartoesAmareloMediaCF + f.CartoesAmareloMediaSofridosCF;
+            bool palpite = false;
+
+            if (cartoesmediacasa > 4 && cartoesmediafora > 4)
+            {
+                List<Partidas> confrontos = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
+          && e.TipoPartida == "ConfrontoDireto" && e.NomeTimeFora == f.NomeTime || e.NomeTimeCasa == f.NomeTime
+          && e.TipoPartida == "ConfrontoDireto" && e.NomeTimeFora == c.NomeTime).ToListAsync();
+
+
+                int overCartao = 0;
+                foreach (var item in confrontos)
+                {
+                    EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(e => e.IdEstatisticaCasa == item.IdEstatisticaCasa);
+
+                    EstatisticaTimesFora fora = await _context.Tb_EstatisticaFora.FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
+
+                    int cartoestotal = (int)casa.CartoesAmareloCasa + (int)fora.CartoesAmareloFora;
+                    if (cartoestotal > 4)
+                        overCartao++;
+                }
+
+                if (confrontos.Count == 5 && overCartao > 3)
+                    palpite = true;
+                if (confrontos.Count == 4 && overCartao > 2)
+                    palpite = true;
+                if (confrontos.Count == 3 && overCartao > 1)
+                    palpite = true;
+                if (confrontos.Count == 2 && overCartao > 1)
+                    palpite = true;
+
+            }
+            if (palpite)
+            {
+                palpites.tipoAposta = TipoAposta.CartõesAmarelo;
+                palpites.num = 3.5;
+
+                palpites.descricao = $"over 3.5 cartoes para essa partida ," +
+                $" os confronstos entre {c.NomeTime} e {f.NomeTime} apresentaram Alta media de cartoes " +
+                $" alem de uma media alta de cartoes nos jogos";
+            }
+
+
+            return palpites;
+
+        }
+
+
+        private async Task<Palpites> UnderCartao(EstatisticaTimes c, EstatisticaTimes f)
+        {
+            Palpites palpites = new Palpites();
+
+            if (c == null || f == null)
+            {
+                return palpites;
+            }
+
+            float cartoesmediacasa = c.CartoesAmareloMediaCF + c.CartoesAmareloMediaSofridosCF;
+            float cartoesmediafora = f.CartoesAmareloMediaCF + f.CartoesAmareloMediaSofridosCF;
+            bool palpite = false;
+
+            if (cartoesmediacasa < 4 && cartoesmediafora < 4)
+            {
+                List<Partidas> confrontos = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
+          && e.TipoPartida == "ConfrontoDireto" && e.NomeTimeFora == f.NomeTime || e.NomeTimeCasa == f.NomeTime
+          && e.TipoPartida == "ConfrontoDireto" && e.NomeTimeFora == c.NomeTime).ToListAsync();
+
+
+                int UnderCartao = 0;
+                foreach (var item in confrontos)
+                {
+                    EstatisticaTimesCasa casa = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(e => e.IdEstatisticaCasa == item.IdEstatisticaCasa);
+
+                    EstatisticaTimesFora fora = await _context.Tb_EstatisticaFora.FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
+
+                    int cartoestotal = (int)casa.CartoesAmareloCasa + (int)fora.CartoesAmareloFora;
+                    if (cartoestotal < 4)
+                        UnderCartao++;
+                }
+
+                if (confrontos.Count == 5 && UnderCartao > 3)
+                    palpite = true;
+                if (confrontos.Count == 4 && UnderCartao > 2)
+                    palpite = true;
+                if (confrontos.Count == 3 && UnderCartao > 1)
+                    if (confrontos.Count == 2 && UnderCartao > 1)
+                        palpite = true;
+
+
+            }
+
+
+            if (palpite)
+            {
+                palpites.tipoAposta = TipoAposta.CartõesAmarelo;
+                palpites.num = 5.5;
+
+                palpites.descricao = $"Under 5.5 cartoes para essa partida ," +
+               $" os confronstos entre {c.NomeTime} e {f.NomeTime} apresentaram baixa media de cartoes " +
+               $" alem de uma baixa media de cartoes";
+            }
+
+            return palpites;
+
+        }
     }
 
+
+    #endregion
+
 }
+

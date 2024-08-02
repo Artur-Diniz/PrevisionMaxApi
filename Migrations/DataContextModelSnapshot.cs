@@ -103,10 +103,22 @@ namespace PrevisionMaxApi.Migrations
                     b.Property<float>("CartoesAmareloMaiorCF")
                         .HasColumnType("real");
 
+                    b.Property<int>("CartoesAmareloMaiorSofridos")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CartoesAmareloMaiorSofridosCF")
+                        .HasColumnType("int");
+
                     b.Property<float>("CartoesAmareloMedia")
                         .HasColumnType("real");
 
                     b.Property<float>("CartoesAmareloMediaCF")
+                        .HasColumnType("real");
+
+                    b.Property<float>("CartoesAmareloMediaSofridos")
+                        .HasColumnType("real");
+
+                    b.Property<float>("CartoesAmareloMediaSofridosCF")
                         .HasColumnType("real");
 
                     b.Property<int>("CartoesAmareloMenor")
@@ -114,6 +126,12 @@ namespace PrevisionMaxApi.Migrations
 
                     b.Property<float>("CartoesAmareloMenorCF")
                         .HasColumnType("real");
+
+                    b.Property<int>("CartoesAmareloMenorSofridos")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CartoesAmareloMenorSofridosCF")
+                        .HasColumnType("int");
 
                     b.Property<float>("CartoesVermelhosMedia")
                         .HasColumnType("real");
@@ -308,6 +326,24 @@ namespace PrevisionMaxApi.Migrations
                     b.Property<float>("escanteiosMenorCF")
                         .HasColumnType("real");
 
+                    b.Property<int>("escanteiosSofridosMaior")
+                        .HasColumnType("int");
+
+                    b.Property<int>("escanteiosSofridosMaiorCF")
+                        .HasColumnType("int");
+
+                    b.Property<float>("escanteiosSofridosMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float>("escanteiosSofridosMediaCF")
+                        .HasColumnType("real");
+
+                    b.Property<int>("escanteiosSofridosMenor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("escanteiosSofridosMenorCF")
+                        .HasColumnType("int");
+
                     b.HasKey("IdTime");
 
                     b.ToTable("Tb_EstatisticaTimes");
@@ -329,6 +365,9 @@ namespace PrevisionMaxApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("CartoesAmareloCasa")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CartoesAmareloCasaSofridos")
                         .HasColumnType("int");
 
                     b.Property<int?>("CartoesVermelhosCasa")
@@ -371,6 +410,9 @@ namespace PrevisionMaxApi.Migrations
                     b.Property<int?>("escanteiosCasa")
                         .HasColumnType("int");
 
+                    b.Property<int?>("escanteiosCasaSofridos")
+                        .HasColumnType("int");
+
                     b.HasKey("IdEstatisticaCasa");
 
                     b.ToTable("Tb_EstatisticaCasa", (string)null);
@@ -392,6 +434,9 @@ namespace PrevisionMaxApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("CartoesAmareloFora")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CartoesAmareloForaSofridos")
                         .HasColumnType("int");
 
                     b.Property<int?>("CartoesVermelhosFora")
@@ -432,6 +477,9 @@ namespace PrevisionMaxApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("escanteiosFora")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("escanteiosForaSofridos")
                         .HasColumnType("int");
 
                     b.HasKey("IdEstatisticaFora");

@@ -870,3 +870,61 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [CartoesAmareloMaiorSofridos] int NOT NULL DEFAULT 0;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [CartoesAmareloMaiorSofridosCF] int NOT NULL DEFAULT 0;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [CartoesAmareloMediaSofridos] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [CartoesAmareloMediaSofridosCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [CartoesAmareloMenorSofridos] int NOT NULL DEFAULT 0;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [CartoesAmareloMenorSofridosCF] int NOT NULL DEFAULT 0;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [escanteiosSofridosMaior] int NOT NULL DEFAULT 0;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [escanteiosSofridosMaiorCF] int NOT NULL DEFAULT 0;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [escanteiosSofridosMedia] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [escanteiosSofridosMediaCF] real NOT NULL DEFAULT CAST(0 AS real);
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [escanteiosSofridosMenor] int NOT NULL DEFAULT 0;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [escanteiosSofridosMenorCF] int NOT NULL DEFAULT 0;
+GO
+
+ALTER TABLE [Tb_EstatisticaFora] ADD [CartoesAmareloForaSofridos] int NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaFora] ADD [escanteiosForaSofridos] int NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaCasa] ADD [CartoesAmareloCasaSofridos] int NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaCasa] ADD [escanteiosCasaSofridos] int NULL;
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20240727173331_Upload2707', N'8.0.6');
+GO
+
+COMMIT;
+GO
+

@@ -268,7 +268,7 @@ namespace PrevisionMax.ConTrollers
                 EstatisticaTimes estatisticaFora = new EstatisticaTimes();
                 EstatisticaTimesCasa nulo = new EstatisticaTimesCasa
                 {
-                    IdEstatisticaCasa =99,
+                    IdEstatisticaCasa = 99,
                     NomeTimeCasa = "Nulo",
                     GolsCasa = -1,
                     GolsSofridosCasa = -1,
@@ -289,14 +289,14 @@ namespace PrevisionMax.ConTrollers
 
                 };
 
-                if (listacasa.Count >0 || casacasa.Count >0)
+                if (listacasa.Count > 0 || casacasa.Count > 0)
                 {
-                    if (listacasa.Count == 0)                    
+                    if (listacasa.Count == 0)
                         listacasa.Add(nulo);
-                    
+
                     if (casacasa.Count == 0)
                         casacasa.Add(nulo);
-                    
+
                     EstatisticaTIMEsDTO timeCasa = new EstatisticaTIMEsDTO
                     {
                         listacasa = listacasa,
@@ -307,7 +307,7 @@ namespace PrevisionMax.ConTrollers
                     estatisticaCasa.NomeTime = partidas.NomeTimeCasa;
                 }
 
-                if (listafora.Any() &&  forafora.Any())
+                if (listafora.Any() && forafora.Any())
                 {
                     if (listafora.Count == 0)
                         listafora.Add(nulo);
@@ -454,6 +454,13 @@ namespace PrevisionMax.ConTrollers
                 escanteiosMaiorCF = (int)c.casacasa.Max(c => c.escanteiosCasa),
                 escanteiosMenorCF = (int)c.casacasa.Min(c => c.escanteiosCasa),
 
+                escanteiosSofridosMedia = (float)c.listacasa.Average(c => c.escanteiosCasaSofridos),
+                escanteiosSofridosMaior = (int)c.listacasa.Max(c => c.escanteiosCasaSofridos),
+                escanteiosSofridosMenor = (int)c.listacasa.Min(c => c.escanteiosCasaSofridos),
+                escanteiosSofridosMediaCF = (float)c.casacasa.Average(c => c.escanteiosCasaSofridos),
+                escanteiosSofridosMaiorCF = (int)c.casacasa.Max(c => c.escanteiosCasaSofridos),
+                escanteiosSofridosMenorCF = (int)c.casacasa.Min(c => c.escanteiosCasaSofridos),
+
                 InpedimentosMedia = (float)c.listacasa.Average(c => c.InpedimentosCasa),
                 InpedimentosMaior = (int)c.listacasa.Max(c => c.InpedimentosCasa),
                 InpedimentosMenor = (int)c.listacasa.Min(c => c.InpedimentosCasa),
@@ -481,6 +488,13 @@ namespace PrevisionMax.ConTrollers
                 CartoesAmareloMediaCF = (float)c.casacasa.Average(c => c.CartoesAmareloCasa),
                 CartoesAmareloMaiorCF = (int)c.casacasa.Max(c => c.CartoesAmareloCasa),
                 CartoesAmareloMenorCF = (int)c.casacasa.Min(c => c.CartoesAmareloCasa),
+
+                CartoesAmareloMediaSofridos = (float)c.listacasa.Average(c => c.CartoesAmareloCasaSofridos),
+                CartoesAmareloMaiorSofridos = (int)c.listacasa.Max(c => c.CartoesAmareloCasaSofridos),
+                CartoesAmareloMenorSofridos = (int)c.listacasa.Min(c => c.CartoesAmareloCasaSofridos),
+                CartoesAmareloMediaSofridosCF = (float)c.casacasa.Average(c => c.CartoesAmareloCasaSofridos),
+                CartoesAmareloMaiorSofridosCF = (int)c.casacasa.Max(c => c.CartoesAmareloCasaSofridos),
+                CartoesAmareloMenorSofridosCF = (int)c.casacasa.Min(c => c.CartoesAmareloCasaSofridos),
 
                 PassesTotaisMedia = (float)c.listacasa.Average(c => c.PassesTotaisCasa),
                 PassesTotaisMaior = c.listacasa.Max(c => c.PassesTotaisCasa),
@@ -511,11 +525,13 @@ namespace PrevisionMax.ConTrollers
             c.chutesnoGolsCasa = f.chutesnoGolsFora;
             c.chutespraforaCasa = f.chutespraforaFora;
             c.escanteiosCasa = f.escanteiosFora;
+            c.escanteiosCasaSofridos = f.escanteiosForaSofridos;
             c.InpedimentosCasa = f.InpedimentosFora;
             c.DefesaGoleiroCasa = f.DefesaGoleiroFora;
             c.FaltasCasas = f.FaltasForas;
             c.CartoesVermelhosCasa = f.CartoesVermelhosFora;
             c.CartoesAmareloCasa = f.CartoesAmareloFora;
+            c.CartoesAmareloCasaSofridos = f.CartoesAmareloForaSofridos;
             c.PassesTotaisCasa = f.PassesTotaisFora;
             c.PassesCompletosCasa = f.PassesCompletosFora;
             c.AtaquesperigososCasa = f.AtaquesperigososFora;
@@ -535,11 +551,13 @@ namespace PrevisionMax.ConTrollers
             f.chutesnoGolsFora = c.chutesnoGolsCasa;
             f.chutespraforaFora = c.chutespraforaCasa;
             f.escanteiosFora = c.escanteiosCasa;
+            f.escanteiosForaSofridos= c.escanteiosCasaSofridos;
             f.InpedimentosFora = c.InpedimentosCasa;
             f.DefesaGoleiroFora = c.DefesaGoleiroCasa;
             f.FaltasForas = c.FaltasCasas;
             f.CartoesVermelhosFora = c.CartoesVermelhosCasa;
             f.CartoesAmareloFora = c.CartoesAmareloCasa;
+            f.CartoesAmareloForaSofridos = c.CartoesAmareloCasaSofridos;
             f.PassesTotaisFora = c.PassesTotaisCasa;
             f.PassesCompletosFora = c.PassesCompletosCasa;
             f.AtaquesperigososFora = c.AtaquesperigososCasa;
