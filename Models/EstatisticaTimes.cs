@@ -66,7 +66,7 @@ namespace PrevisionMax.Models
         public int escanteiosSofridosMenorCF { get; set; }
         public int escanteiosSofridosMaiorCF { get; set; }
 
-        
+
 
         public float InpedimentosMedia { get; set; }
         public int InpedimentosMenor { get; set; }
@@ -103,10 +103,10 @@ namespace PrevisionMax.Models
 
         public float CartoesAmareloMediaSofridos { get; set; }
         public int CartoesAmareloMenorSofridos { get; set; }
-        public int CartoesAmareloMaiorSofridos { get; set; }   
+        public int CartoesAmareloMaiorSofridos { get; set; }
         public float CartoesAmareloMediaSofridosCF { get; set; }
         public int CartoesAmareloMenorSofridosCF { get; set; }
-        public int CartoesAmareloMaiorSofridosCF { get; set; }     
+        public int CartoesAmareloMaiorSofridosCF { get; set; }
 
         public float PassesTotaisMedia { get; set; }
         public int PassesTotaisMenor { get; set; }
@@ -120,6 +120,13 @@ namespace PrevisionMax.Models
 
         public float AtaquesperigososMedia { get; set; }
         public float AtaquesperigososMediaCF { get; set; }
+
+        public float? PossedeBolaMedia { get; set; }
+        public float? PossedeBolaMenor { get; set; }
+        public float? PossedeBolaMaior { get; set; }
+        public float? PossedeBolaMediaCF { get; set; }
+        public float? PossedeBolaMenorCF { get; set; }
+        public float? PossedeBolaMaiorCF { get; set; }
 
     }
 }

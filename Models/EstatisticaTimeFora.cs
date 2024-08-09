@@ -1,5 +1,5 @@
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace PrevisionMax.Models
     public class EstatisticaTimesFora
     {
         [Key]
-        public int IdEstatisticaFora{ get; set; }
+        public int IdEstatisticaFora { get; set; }
         public string NomeTimeFora { get; set; } = string.Empty;
         public int GolsFora { get; set; }
         public int GolsSofridosFora { get; set; }
@@ -31,6 +31,9 @@ namespace PrevisionMax.Models
         public int PassesTotaisFora { get; set; }
         public int PassesCompletosFora { get; set; }
         public int AtaquesperigososFora { get; set; }
+        public int? PossedeBolaFora { get; set; }
+
+
 
     }
 }

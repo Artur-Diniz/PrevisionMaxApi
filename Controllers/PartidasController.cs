@@ -507,9 +507,15 @@ namespace PrevisionMax.ConTrollers
                 PassesCompletosMediaCF = (float)c.casacasa.Average(c => c.PassesCompletosCasa),
 
                 AtaquesperigososMedia = (float)c.listacasa.Average(c => c.AtaquesperigososCasa),
-                AtaquesperigososMediaCF = (float)c.casacasa.Average(c => c.AtaquesperigososCasa)
-            };
+                AtaquesperigososMediaCF = (float)c.casacasa.Average(c => c.AtaquesperigososCasa),
 
+                PossedeBolaMedia = (float)c.listacasa.Average(c => c.PossedeBolaCasa),
+                PossedeBolaMenor = c.listacasa.Max(c => c.PossedeBolaCasa),
+                PossedeBolaMaior = c.listacasa.Min(c => c.PossedeBolaCasa),
+                PossedeBolaMediaCF = (float)c.casacasa.Average(c => c.PossedeBolaCasa),
+                PossedeBolaMenorCF = c.casacasa.Max(c => c.PossedeBolaCasa),
+                PossedeBolaMaiorCF = c.casacasa.Min(c => c.PossedeBolaCasa),
+            };
 
 
             return estatistica;
@@ -537,9 +543,9 @@ namespace PrevisionMax.ConTrollers
             c.AtaquesperigososCasa = f.AtaquesperigososFora;
             c.NomeTimeCasa = f.NomeTimeFora;
             c.AdversarioFora = f.AdversarioCasa;
+            c.PossedeBolaCasa = f.PossedeBolaFora;
 
             return c;
-
         }
 
         private EstatisticaTimesFora ConverterCasaParaFora(EstatisticaTimesCasa c)
@@ -551,7 +557,7 @@ namespace PrevisionMax.ConTrollers
             f.chutesnoGolsFora = c.chutesnoGolsCasa;
             f.chutespraforaFora = c.chutespraforaCasa;
             f.escanteiosFora = c.escanteiosCasa;
-            f.escanteiosForaSofridos= c.escanteiosCasaSofridos;
+            f.escanteiosForaSofridos = c.escanteiosCasaSofridos;
             f.InpedimentosFora = c.InpedimentosCasa;
             f.DefesaGoleiroFora = c.DefesaGoleiroCasa;
             f.FaltasForas = c.FaltasCasas;
@@ -561,6 +567,8 @@ namespace PrevisionMax.ConTrollers
             f.PassesTotaisFora = c.PassesTotaisCasa;
             f.PassesCompletosFora = c.PassesCompletosCasa;
             f.AtaquesperigososFora = c.AtaquesperigososCasa;
+            f.PossedeBolaFora = c.PossedeBolaCasa;
+
 
             return f;
         }

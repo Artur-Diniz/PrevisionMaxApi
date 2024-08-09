@@ -18,6 +18,7 @@ namespace PrevisionMax.Data
         public DbSet<Partidas> TB_Partidas { get; set; }
         public DbSet<TabelaCampeonato> TB_TBCampeonato { get; set; }
         public DbSet<Palpites> TB_Palpites { get; set; }
+        public DbSet<EstatisticaTabela> TB_EstatisticaTabela { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

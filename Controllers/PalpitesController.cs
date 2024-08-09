@@ -241,60 +241,68 @@ namespace PrevisionMax.ConTrollers
                     && p.Campeonato != "Copa Sul-Americana" && p.Campeonato != "Copa Libertadores"
                      && p.Campeonato != "Copa do Mundo" && p.Campeonato != "Liga dos Campeoes")
             {
-                Palpites under4 = await MetodoUnder4(casa, fora);
-                if (under4.descricao != "")
+                    Palpites under4 = await MetodoUnder4(casa, fora);
+                    if (under4.descricao != "")
+                    {
+                        under4.idPartida = p.idPartida;
+                        palpites.Add(under4);
+                        await _context.TB_Palpites.AddAsync(under4);
+                        await _context.SaveChangesAsync();
+                    }
+                    Palpites Over2 = await MetodoOver2(casa, fora);
+                    if (Over2.descricao != "")
+                    {
+                        Over2.idPartida = p.idPartida;
+                        palpites.Add(Over2);
+                        await _context.TB_Palpites.AddAsync(Over2);
+                        await _context.SaveChangesAsync();
+                    }
+                    Palpites Over1Gol = await GolTime(casa, fora);
+                    if (Over1Gol.descricao != "")
+                    {
+                        Over1Gol.idPartida = p.idPartida;
+                        palpites.Add(Over1Gol);
+                        await _context.TB_Palpites.AddAsync(Over1Gol);
+                        await _context.SaveChangesAsync();
+                    }
+                    Palpites underCantos = await UnderCantos(casa, fora);
+                    if (underCantos.descricao != "")
+                    {
+                        underCantos.idPartida = p.idPartida;
+                        palpites.Add(underCantos);
+                        await _context.TB_Palpites.AddAsync(underCantos);
+                        await _context.SaveChangesAsync();
+                    }
+                    Palpites overcantos = await OverCantos(casa, fora);
+                    if (overcantos.descricao != "")
+                    {
+                        overcantos.idPartida = p.idPartida;
+                        palpites.Add(overcantos);
+                        await _context.TB_Palpites.AddAsync(overcantos);
+                        await _context.SaveChangesAsync();
+                    }
+                    Palpites underCartao = await UnderCartao(casa, fora);
+                    if (underCartao.descricao != "")
+                    {
+                        underCartao.idPartida = p.idPartida;
+                        palpites.Add(underCartao);
+                        await _context.TB_Palpites.AddAsync(underCartao);
+                        await _context.SaveChangesAsync();
+                    }
+                    Palpites overcartao = await OverCartao(casa, fora);
+                    if (overcartao.descricao != "")
+                    {
+                        overcartao.idPartida = p.idPartida;
+                        palpites.Add(overcartao);
+                        await _context.TB_Palpites.AddAsync(overcartao);
+                        await _context.SaveChangesAsync();
+                    }
+                Palpites vitoriaEmpate = await Winner(casa, fora);
+                if (vitoriaEmpate.descricao != "")
                 {
-                    under4.idPartida = p.idPartida;
-                    palpites.Add(under4);
-                    await _context.TB_Palpites.AddAsync(under4);
-                    await _context.SaveChangesAsync();
-                }
-                Palpites Over2 = await MetodoOver2(casa, fora);
-                if (Over2.descricao != "")
-                {
-                    Over2.idPartida = p.idPartida;
-                    palpites.Add(Over2);
-                    await _context.TB_Palpites.AddAsync(Over2);
-                    await _context.SaveChangesAsync();
-                }
-                Palpites Over1Gol = await GolTime(casa, fora);
-                if (Over1Gol.descricao != "")
-                {
-                    Over1Gol.idPartida = p.idPartida;
-                    palpites.Add(Over1Gol);
-                    await _context.TB_Palpites.AddAsync(Over1Gol);
-                    await _context.SaveChangesAsync();
-                }
-                Palpites underCantos = await UnderCantos(casa, fora);
-                if (underCantos.descricao != "")
-                {
-                    underCantos.idPartida = p.idPartida;
-                    palpites.Add(underCantos);
-                    await _context.TB_Palpites.AddAsync(underCantos);
-                    await _context.SaveChangesAsync();
-                }
-                Palpites overcantos = await OverCantos(casa, fora);
-                if (overcantos.descricao != "")
-                {
-                    overcantos.idPartida = p.idPartida;
-                    palpites.Add(overcantos);
-                    await _context.TB_Palpites.AddAsync(overcantos);
-                    await _context.SaveChangesAsync();
-                }
-                Palpites underCartao = await UnderCartao(casa, fora);
-                if (underCartao.descricao != "")
-                {
-                    underCartao.idPartida = p.idPartida;
-                    palpites.Add(underCartao);
-                    await _context.TB_Palpites.AddAsync(underCartao);
-                    await _context.SaveChangesAsync();
-                }
-                Palpites overcartao = await OverCartao(casa, fora);
-                if (overcartao.descricao != "")
-                {
-                    overcartao.idPartida = p.idPartida;
-                    palpites.Add(overcartao);
-                    await _context.TB_Palpites.AddAsync(overcartao);
+                    vitoriaEmpate.idPartida = p.idPartida;
+                    palpites.Add(vitoriaEmpate);
+                    await _context.TB_Palpites.AddAsync(vitoriaEmpate);
                     await _context.SaveChangesAsync();
                 }
             }
@@ -790,10 +798,188 @@ namespace PrevisionMax.ConTrollers
             return palpites;
 
         }
+
+
+        private async Task<Palpites> Winner(EstatisticaTimes c, EstatisticaTimes f)
+        {
+            Palpites palpites = new Palpites();
+
+            if (c == null || f == null)
+            {
+                return palpites;
+            }
+
+
+            List<Partidas> casa = await _context.TB_Partidas.Where(e => e.NomeTimeCasa == c.NomeTime
+            && e.TipoPartida == "CasaCasa").ToListAsync();
+
+            List<Partidas> fora = await _context.TB_Partidas.Where(e => e.NomeTimeFora == f.NomeTime
+            && e.TipoPartida == "ForaFora").ToListAsync();
+
+            if (casa.Count < 3 || fora.Count < 3)
+            {
+                return palpites;
+            }
+
+            int golsSemGolCasa = 0,aprovetamentocasaWin=0, vitoraempatecasa=0;
+            foreach (var item in casa)
+            {
+                EstatisticaTimesCasa ca = await _context.Tb_EstatisticaCasa.FirstOrDefaultAsync(e => e.IdEstatisticaCasa == item.IdEstatisticaCasa);
+               
+                if (ca.GolsSofridosCasa < 0.5)
+                    golsSemGolCasa++;
+
+                if (ca.GolsCasa > ca.GolsSofridosCasa)
+                {
+                    aprovetamentocasaWin++;
+                    vitoraempatecasa++;
+                }
+                else if (ca.GolsCasa >= ca.GolsSofridosCasa)
+                    vitoraempatecasa++;
+
+            }
+
+            double porcentegemWinRateCasa = Porcentagemcount(aprovetamentocasaWin, casa.Count);
+            double vitoraempatecasaDWRateCasa = Porcentagemcount(vitoraempatecasa, casa.Count);
+            double porcentagemCasa = Porcentagemcount(golsSemGolCasa,casa.Count);
+
+            float precisaoCasa = c.PassesCompletosMediaCF / c.PassesTotaisMaiorCF;
+
+            float posseCasa = (float)c.PossedeBolaMediaCF / 100;
+
+            float chancedeVitoriaCasa = (float)(posseCasa * 0.25 + precisaoCasa * 0.25 + c.GolMediasCF * 0.25 + porcentagemCasa * 0.25);
+
+            int golsSemGolFora = 0,aproveitamentoWinfora=0,vitoriaemaptefora=0;
+            foreach (var item in fora)
+            {
+                EstatisticaTimesFora fo = await _context.Tb_EstatisticaFora.FirstOrDefaultAsync(e => e.IdEstatisticaFora == item.IdEstatisticaFora);
+
+                if (fo.GolsSofridosFora < 0.5)
+                    golsSemGolFora++;
+
+                if (fo.GolsFora > fo.GolsSofridosFora)
+                {
+                    aproveitamentoWinfora++;
+                    vitoriaemaptefora++;
+                }
+                else if (fo.GolsFora >= fo.GolsSofridosFora)
+                    vitoriaemaptefora++;
+
+            }
+
+            double porcentegemWinRateFora = Porcentagemcount(aproveitamentoWinfora, casa.Count);
+            double vitoraempatecasaDWRateFora = Porcentagemcount(vitoriaemaptefora, casa.Count);
+
+            double porcentagemFora = Porcentagemcount(golsSemGolFora , fora.Count);
+            float precisaoFora = c.PassesCompletosMediaCF / c.PassesTotaisMaiorCF;
+
+            float posseFora = (float)f.PossedeBolaMediaCF / 100;
+
+            float chancedeVitoriaFora = (float)(posseFora * 0.25 + precisaoFora * 0.25 + f.GolMediasCF * 0.25 + porcentagemFora * 0.25);
+
+            float Partida = chancedeVitoriaFora + chancedeVitoriaCasa;
+
+            float VitoriaCasa = (chancedeVitoriaCasa / Partida)*100;
+            float VitoriaFora = (chancedeVitoriaFora / Partida)*100;
+
+            float DiferençaWin = VitoriaCasa - VitoriaFora;
+
+            if (DiferençaWin > 10 && vitoraempatecasaDWRateCasa>=0.70)
+            {
+                if (DiferençaWin < 24.99 && aprovetamentocasaWin>=0.60)
+                {
+                    palpites.tipoAposta = TipoAposta.CasaVence;
+                    palpites.num = 0;
+
+                    palpites.descricao = $"Casa Vitoria Empate" +
+                   $" o Mandante {c.NomeTime} tem se mostrar um adversário melhor em comparação ao {f.NomeTime}, tendo tendencia Maior de vitoria o Mandante";
+
+                }
+                else
+                {
+                    palpites.tipoAposta = TipoAposta.CasaVence;
+                    palpites.num = 0;
+
+                    palpites.descricao = $"Casa Vitoria " +
+                   $"o Mandante {c.NomeTime} tem se mostrar um adversário Superior em comparação ao {f.NomeTime}, tendo tendencia Maior de vitoria o Mandante";
+
+                }
+
+            }
+            if (DiferençaWin < -10 && vitoraempatecasaDWRateFora>=0.70 )
+            {
+                if (DiferençaWin > -24.99 && aproveitamentoWinfora >= 0.60)
+                {
+                    palpites.tipoAposta = TipoAposta.ForaVence;
+                    palpites.num = 0;
+
+                    palpites.descricao = $"Fora Vitoria Empate " +
+                   $"o Mandante {c.NomeTime} tem se mostrar um adversário Fraco em comparação ao {f.NomeTime}, tendo tendencia Maior de vitoria  o Visitante";
+
+                }
+                else
+                {
+                    palpites.tipoAposta = TipoAposta.ForaVence;
+                    palpites.num = 0;
+
+                    palpites.descricao = $"Fora Vitoria " +
+                   $"o Mandante {c.NomeTime} tem se mostrar um adversário Fraco em comparação ao {f.NomeTime}, tendo tendencia Maior de vitoria o Visitante";
+
+                }
+            }
+
+
+
+
+            return palpites;
+
+        }
+
+        private static double Porcentagemcount(int ocorrencia, int total)
+        {
+            double input = 0;
+            if (total == 5)
+            {
+                if (ocorrencia == 5)
+                    input = 1;
+                else if (ocorrencia == 4)
+                    input = 0.8;
+                else if (ocorrencia == 3)
+                    input = 0.6;
+                else if (ocorrencia == 2)
+                    input = 0.4;
+                else if (ocorrencia == 1)
+                    input = 0.2;
+            }
+            else if (total == 4)
+            {
+                if (ocorrencia == 4)
+                    input = 1;
+                else if (ocorrencia == 3)
+                    input = 0.75;
+                else if (ocorrencia == 2)
+                    input = 0.5;
+                else if (ocorrencia == 1)
+                    input = 0.25;
+            }
+            else if (total == 3)
+            {
+                if (ocorrencia == 3)
+                    input = 1;
+                else if (ocorrencia == 2)
+                    input = 0.66;
+                else if (ocorrencia == 1)
+                    input = 0.33;
+            }
+
+            return input;
+        }
+
+
+
+
+        #endregion
+
     }
-
-
-    #endregion
-
 }
 

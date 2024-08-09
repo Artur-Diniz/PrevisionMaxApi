@@ -928,3 +928,37 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [PossedeBolaMaior] real NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [PossedeBolaMaiorCF] real NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [PossedeBolaMedia] real NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [PossedeBolaMediaCF] real NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [PossedeBolaMenor] real NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaTimes] ADD [PossedeBolaMenorCF] real NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaFora] ADD [PossedeBolaFora] int NULL;
+GO
+
+ALTER TABLE [Tb_EstatisticaCasa] ADD [PossedeBolaCasa] int NULL;
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20240802210848_Upload0208', N'8.0.6');
+GO
+
+COMMIT;
+GO
+

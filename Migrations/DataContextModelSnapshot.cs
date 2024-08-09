@@ -254,6 +254,24 @@ namespace PrevisionMaxApi.Migrations
                     b.Property<float>("PassesTotaisMenorCF")
                         .HasColumnType("real");
 
+                    b.Property<float?>("PossedeBolaMaior")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("PossedeBolaMaiorCF")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("PossedeBolaMedia")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("PossedeBolaMediaCF")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("PossedeBolaMenor")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("PossedeBolaMenorCF")
+                        .HasColumnType("real");
+
                     b.Property<int>("TentativasGolsMaior")
                         .HasColumnType("int");
 
@@ -398,6 +416,9 @@ namespace PrevisionMaxApi.Migrations
                     b.Property<int>("PassesTotaisCasa")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PossedeBolaCasa")
+                        .HasColumnType("int");
+
                     b.Property<int>("TentativasGolsCasa")
                         .HasColumnType("int");
 
@@ -465,6 +486,9 @@ namespace PrevisionMaxApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PassesTotaisFora")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PossedeBolaFora")
                         .HasColumnType("int");
 
                     b.Property<int>("TentativasGolsFora")
